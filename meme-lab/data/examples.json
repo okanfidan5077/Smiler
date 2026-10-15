@@ -1,0 +1,85 @@
+[
+  {
+    "format": "multi_panel", "mechanic": "Absurd Fix",
+    "panels": [
+      { "speaker": "Manager", "line": "Half the unit tests are failing in the pipeline. Fix it." },
+      { "speaker": "Developer", "line": "Done." },
+      { "speaker": "Manager", "line": "How?" },
+      { "speaker": "Developer", "line": "I removed the unit tests." }
+    ]
+  },
+  {
+    "format": "multi_panel", "mechanic": "Absurd Fix",
+    "panels": [
+      { "speaker": "Manager", "line": "The database can't handle the load. The orders table has billions of rows." },
+      { "speaker": "Developer", "line": "Solved it." },
+      { "speaker": "Manager", "line": "It's fast again! How?" },
+      { "speaker": "Developer", "line": "I deleted the orders table." }
+    ]
+  },
+  {
+    "format": "multi_panel", "mechanic": "Absurd Fix",
+    "panels": [
+      { "speaker": "CEO", "line": "The website collapses under the load. What do we do?" },
+      { "speaker": "IT", "line": "Block all international traffic. Load is down 90%." },
+      { "speaker": "Sales report", "line": "International customers: 90% of revenue. Sales: down 90%." }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Roll Safe", "mechanic": "Absurd Fix",
+    "panels": [ { "speaker": "Caption", "line": "The servers can't crash if you shut down the website." } ]
+  },
+  {
+    "format": "recast_template", "template": "Distracted Boyfriend", "mechanic": "Shiny Object",
+    "panels": [
+      { "speaker": "The boyfriend", "line": "The boss" },
+      { "speaker": "The woman in red", "line": "New project" },
+      { "speaker": "The girlfriend", "line": "Unfinished projects" }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Grave Selfie", "mechanic": "Villain's Smile",
+    "panels": [
+      { "speaker": "The grave", "line": "Pay raise" },
+      { "speaker": "The man smiling at the grave", "line": "The boss" }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Crying Cat Interview", "mechanic": "Ironic Inference",
+    "panels": [
+      { "speaker": "Interviewer", "line": "Your staff work 16-hour shifts." },
+      { "speaker": "Interviewer", "line": "Business must be going great!" }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Baboon and Sleeping Lion", "mechanic": "Impending Doom",
+    "panels": [
+      { "speaker": "The sleeping lion", "line": "The website" },
+      { "speaker": "The baboon", "line": "Infrastructure team" },
+      { "speaker": "The stick", "line": "Update" }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Only Someone Stupid Would Fall For That (fish)", "mechanic": "Empty Promise",
+    "panels": [
+      { "speaker": "The bait", "line": "Be patient, everything will get better" },
+      { "speaker": "The fish that bites", "line": "Staff" }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Soldier Protecting Sleeping Child", "mechanic": "Misdirected Effort",
+    "panels": [
+      { "speaker": "The soldier, shielding the wrong side", "line": "Security team" },
+      { "speaker": "The weapons flying in from the other side", "line": "Cyber attacks" },
+      { "speaker": "The sleeping man", "line": "Our systems" }
+    ]
+  },
+  {
+    "format": "recast_template", "template": "Moe Throws Barney Out", "mechanic": "Endless Cycle",
+    "panels": [
+      { "speaker": "Thrown out", "line": "Fraud" },
+      { "speaker": "The bartender", "line": "The company" },
+      { "speaker": "Back at the bar", "line": "Fraud" }
+    ]
+  }
+]

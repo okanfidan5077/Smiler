@@ -1,0 +1,10 @@
+[
+  { "name": "Absurd Fix", "shape": "Someone fixes the metric and kills the goal, then reports it proudly.", "example": "\"The tests pass now.\" \"How?\" \"I deleted the tests.\"" },
+  { "name": "Shiny Object", "shape": "The old commitment is abandoned for something new and exciting.", "example": "The boss eyes the new project while the unfinished projects look on, betrayed." },
+  { "name": "Villain's Smile", "shape": "Leadership is openly pleased about the staff's loss.", "example": "The boss poses cheerfully at the grave of the pay raise." },
+  { "name": "Empty Promise", "shape": "The same bait works every single time.", "example": "Staff bite the hook labeled \"Be patient, things will get better\" again." },
+  { "name": "Ironic Inference", "shape": "An outsider reads a bad sign as a good sign.", "example": "\"Your staff work 16-hour shifts.\" \"Business must be booming!\"" },
+  { "name": "Impending Doom", "shape": "Disaster sneaks up on something calm and unaware.", "example": "The infrastructure team creeps up on the sleeping website, holding an update like a club." },
+  { "name": "Endless Cycle", "shape": "The problem that was removed walks right back in.", "example": "Fraud is thrown out of the company and is back at the bar in the next frame." },
+  { "name": "Misdirected Effort", "shape": "Heroic effort aimed at the wrong place achieves nothing.", "example": "The security team shields one side while the cyber attacks hit from the other." }
+]

@@ -1,0 +1,7 @@
+{
+  "description": "All roles on a local Ollama model. Swap the model for whatever you pull on the 5090. Set OLLAMA_URL if Ollama runs on another machine.",
+  "writer":    { "provider": "ollama", "model": "qwen3:32b", "temperature": 1.0, "think": false },
+  "critic":    { "provider": "ollama", "model": "qwen3:32b", "temperature": 0.2, "think": false },
+  "explainer": { "provider": "ollama", "model": "qwen3:32b", "temperature": 0.3, "think": false },
+  "matcher":   { "provider": "ollama", "model": "qwen3:32b", "temperature": 0.0, "think": false }
+}

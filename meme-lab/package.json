@@ -1,0 +1,14 @@
+{
+  "name": "meme-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Phase 0: test writer and critic prompts for Workplace Absurdities memes",
+  "scripts": {
+    "run": "node src/run.js",
+    "import-ratings": "node src/import-ratings.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.134.0"
+  }
+}

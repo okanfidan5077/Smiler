@@ -1,0 +1,7 @@
+{
+  "description": "All roles on Claude Opus 5.5. price = [USD per 1M input tokens, USD per 1M output tokens].",
+  "writer":    { "provider": "anthropic", "model": "claude-opus-5-5", "effort": "high",   "price": [4, 20] },
+  "critic":    { "provider": "anthropic", "model": "claude-opus-5-5", "effort": "medium", "price": [4, 20] },
+  "explainer": { "provider": "anthropic", "model": "claude-opus-5-5", "effort": "low",    "price": [4, 20] },
+  "matcher":   { "provider": "anthropic", "model": "claude-opus-5-5", "effort": "low",    "price": [4, 20] }
+}

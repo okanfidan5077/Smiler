@@ -1,0 +1,7 @@
+{
+  "description": "Canned responses for testing the pipeline and report without any model.",
+  "writer":    { "provider": "mock" },
+  "critic":    { "provider": "mock" },
+  "explainer": { "provider": "mock" },
+  "matcher":   { "provider": "mock" }
+}
