@@ -27,6 +27,8 @@ Options: `--seeds` (sector × mechanic pairs), `--n` (concepts per seed), `--kee
 
 Open `report.html`. Cards are shuffled and anonymous. Rate 1–5, add chips and notes, then **Reveal** to see which model wrote each and how the critic scored it. Tick "include critic-cut concepts" and rate some of those too, so the summary can tell whether the critic agrees with you.
 
+To read the drafts with a translation in parentheses (a reading aid only; ratings and feedback stay English), run `node src/translate.js results/<timestamp> --lang Turkish` and reopen the report. Ratings already given are kept.
+
 **Export ratings**, then feed them back to the writer and critic:
 
 ```bash

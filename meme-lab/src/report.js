@@ -25,6 +25,7 @@ export function renderReport(result) {
   .panel:first-of-type { border-top:0; }
   .scene { color:var(--quiet); font-style:italic; font-size:13px; }
   .line b { font-weight:600; }
+  .tr { color:var(--quiet); font-style:normal; }
   .rate { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; align-items:center; }
   .chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
   .chips button { font-size:13px; }
@@ -63,6 +64,8 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(ratings)); }
 const hash = (s) => { let h = 2166136261; for (const ch of s) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return h >>> 0; };
 const concepts = RESULT.concepts.slice().sort((a, b) => hash(a.id) - hash(b.id));
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+// Optional reader translation (added by src/translate.js), shown in parentheses.
+const trText = (s) => (s ? \` <span class="tr">(\${esc(s)})</span>\` : "");
 
 function render() {
   const showCut = document.getElementById("showCut").checked;
@@ -72,15 +75,16 @@ function render() {
     const rv = c.review;
     return \`<article class="card \${c.kept ? "" : "cut"}" data-id="\${c.id}">
       <div class="meta">\${esc(c.sector)} · \${esc(c.format.replace("_", " "))}\${c.template ? " · " + esc(c.template) : ""}</div>
-      \${c.panels.map((p) => \`<div class="panel"><div class="scene">\${esc(p.scene)}</div><div class="line"><b>\${esc(p.speaker)}:</b> \${esc(p.line)}</div></div>\`).join("")}
+      \${c.panels.map((p) => \`<div class="panel"><div class="scene">\${esc(p.scene)}\${trText(p.tr?.scene)}</div><div class="line"><b>\${esc(p.speaker)}:</b> \${esc(p.line)}\${trText(p.tr?.line)}</div></div>\`).join("")}
       <div class="rate">\${[1, 2, 3, 4, 5].map((n) => \`<button data-rate="\${n}" class="\${r.rating === n ? "on" : ""}">\${n}</button>\`).join("")}</div>
       <div class="chips">\${CHIPS.map((ch) => \`<button data-chip="\${ch}" class="\${(r.reasons || []).includes(ch) ? "on" : ""}">\${ch}</button>\`).join("")}</div>
       <textarea data-note placeholder="Optional note (what to change, what worked)">\${esc(r.note || "")}</textarea>
       <div class="reveal">
+        \${c.invalid ? \`<div class="bad"><b>Invalid, skipped critic:</b> \${esc(c.invalid)}</div>\` : ""}
         <div><b>Model:</b> \${esc(c.config)} · <b>Mechanic:</b> \${esc(c.mechanic)} · <b>Critic:</b> \${rv ? rv.overall + "/10, " + rv.verdict : "n/a"}</div>
-        <div><b>Intended:</b> \${esc(c.premise)}</div>
+        <div><b>Intended:</b> \${esc(c.premise)}\${trText(c.premise_tr)}</div>
         \${rv ? \`<div><b>Weakest:</b> \${esc(rv.weakest_point)} <b>Fix:</b> \${esc(rv.fix)}</div>\` : ""}
-        \${c.explain ? \`<div><b>Blind reader:</b> \${esc(c.explain.explanation)} (clarity \${c.explain.clarity}/5)</div>\` : ""}
+        \${c.explain ? \`<div><b>Blind reader:</b> \${esc(c.explain.explanation)} (clarity \${c.explain.clarity}/5\${c.explain.smile ? \`, smile \${c.explain.smile}/5\` : ""})</div>\` : ""}
         \${c.match ? \`<div><b>Got the joke:</b> <span class="\${c.match.match === "no" ? "bad" : "good"}">\${c.match.match}</span>, \${esc(c.match.reason)}</div>\` : ""}
       </div>
     </article>\`;

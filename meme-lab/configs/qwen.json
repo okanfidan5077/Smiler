@@ -1,0 +1,7 @@
+{
+  "description": "All roles on Qwen 3.6 27B (dense) via local Ollama, thinking on: with think false, Ollama 0.30.10 ignores the JSON schema for this model. Set OLLAMA_URL if Ollama runs on another machine.",
+  "writer":    { "provider": "ollama", "model": "qwen3.6:27b", "temperature": 1.0, "think": true },
+  "critic":    { "provider": "ollama", "model": "qwen3.6:27b", "temperature": 0.2, "think": true },
+  "explainer": { "provider": "ollama", "model": "qwen3.6:27b", "temperature": 0.3, "think": true },
+  "matcher":   { "provider": "ollama", "model": "qwen3.6:27b", "temperature": 0.0, "think": true }
+}

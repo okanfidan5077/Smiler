@@ -1,4 +1,589 @@
 {
-  "liked": [],
-  "rejected": []
+  "liked": [
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-1-2",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "Look at that storage density. We've finally maximized the cubic volume.",
+          "scene": "A manager proudly pointing to a massive industrial shelf that is visibly bowing in the middle, with one single bolt popping out of the frame."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-1-5",
+      "rating": 4,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "Three hundred days without an accident! This team is unstoppable.",
+          "scene": "The manager standing in front of a safety scoreboard; behind him, a massive rack is slowly tilting at a 15-degree angle over the entire staff."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-2-5",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "N/A",
+      "panels": [
+        {
+          "speaker": "Chief",
+          "line": "We cannot enter a burning building without a signed 40-page Risk Assessment Form.",
+          "scene": "The Chief holding a thick stack of papers in front of a raging fire."
+        },
+        {
+          "speaker": "Firefighter",
+          "line": "But the roof is literally collapsing!",
+          "scene": "A firefighter pointing up at debris falling from a ceiling."
+        },
+        {
+          "speaker": "Chief",
+          "line": "Exactly. Which is why I've added a special section for 'Falling Debris' on page 32.",
+          "scene": "The Chief proudly flipping to a specific page of the document while the building crashes behind him."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-2-8",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Roll Safe",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "You can't have a structural fire if you remove all the structures.",
+          "scene": "A man pointing to his head with a smug expression; in the background is just a flat, empty concrete lot where a building used to be."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-3-4",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "Endless Cycle",
+      "panels": [
+        {
+          "speaker": "Chef",
+          "line": "The Risotto is off the menu. It takes too long and kills the flow.",
+          "scene": "Chef crossing out 'Risotto' on a printed menu with a thick red marker."
+        },
+        {
+          "speaker": "Manager",
+          "line": "We need something unique for the weekend. Let's run a special.",
+          "scene": "Manager leaning over the counter, looking thoughtful."
+        },
+        {
+          "speaker": "Server",
+          "line": "Tonight's special is the Risotto.",
+          "scene": "Server talking to customers; in the background, the Chef is staring at the wall in despair."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-4-1",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "N/A",
+      "panels": [
+        {
+          "speaker": "Project Manager",
+          "line": "Our safety audit is a disaster. Too many documented violations per site.",
+          "scene": "A Project Manager in a clean hardhat staring at a clipboard with many red marks."
+        },
+        {
+          "speaker": "Site Foreman",
+          "line": "I've taken care of it. The audit looks perfect now.",
+          "scene": "The Foreman smiling confidently, holding an empty folder."
+        },
+        {
+          "speaker": "Project Manager",
+          "line": "Impressive. How did you fix the site?",
+          "scene": "Project Manager looking pleased, glancing at a report."
+        },
+        {
+          "speaker": "Site Foreman",
+          "line": "I burned the audit forms.",
+          "scene": "Wide shot of the Foreman standing next to a trash can fire with papers burning inside; in the background, a worker is precariously balancing on a ladder."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-4-6",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "This Is Fine",
+      "panels": [
+        {
+          "speaker": "The dog",
+          "line": "The Site Foreman",
+          "scene": "Foreman sitting at a desk in a trailer."
+        },
+        {
+          "speaker": "The fire/chaos",
+          "line": "Major structural cracks appearing in the walls",
+          "scene": "Walls splitting open and ceiling tiles falling."
+        },
+        {
+          "speaker": "The speech bubble",
+          "line": "We're still on schedule.",
+          "scene": "Foreman sipping coffee with a deadpan expression."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-5-4",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Celebrating another year of meeting targets to qualify for the bonus promised last year.",
+          "scene": "A group of tired nurses in a breakroom, staring blankly at a single, tiny cupcake on a table."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/gemma-5-6",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Drake",
+      "panels": [
+        {
+          "speaker": "Drake disgusted",
+          "line": "Hiring two full-time nurses to fix the ratio",
+          "scene": "The hand gesturing 'no'."
+        },
+        {
+          "speaker": "Drake pleased",
+          "line": "A memo stating we are 'actively reviewing staffing requirements'",
+          "scene": "The hand gesturing 'yes' with a smile."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-2-4",
+      "rating": 5,
+      "format": "single",
+      "template": "null",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Another quiet shift.",
+          "scene": "A firefighter calmly reads a paperback at the day room desk. Behind him, a fire truck tire slowly flattens, brake fluid leaks in a widening puddle, and a ceiling sprinkler pipe drips steadily onto a stack of unpaid maintenance invoices."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-2-7",
+      "rating": 5,
+      "format": "single",
+      "template": "null",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "We're fully compliant and ready for review.",
+          "scene": "The station chief stands proudly with a thumbs-up next to a spotless locker room where every helmet is aligned and every shelf is color-coded. Through a glass window behind him, the engine bay is completely empty except for a 'Budget Pending' sign taped to a rusted ladder."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-4-2",
+      "rating": 4,
+      "format": "single",
+      "template": "Absurd Fix",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "We eliminated all interior construction delays by removing the floors.",
+          "scene": "Foreman stands proudly next to a freshly poured elevator shaft that drops straight into the ground with no landings, doors, or staircases. A clipboard reading 'On Schedule' is pinned to the rebar."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-4-5",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "Endless Cycle",
+      "panels": [
+        {
+          "speaker": "Electrician",
+          "line": "Wires are routed through the false ceiling.",
+          "scene": "Electrician smiles, holding a finished junction box. Neat cables disappear into an open grid ceiling."
+        },
+        {
+          "speaker": "Drywall Team",
+          "line": "Ceiling is sealed and painted.",
+          "scene": "Drywall crew steps back from a pristine, freshly painted ceiling. The grid is completely covered."
+        },
+        {
+          "speaker": "Plumber",
+          "line": "We found a leak. Cutting it open to fix it.",
+          "scene": "Plumber holds a reciprocating saw mid-cut, already breaking through the painted ceiling. Electrician and drywall crew watch in the background, shoulders slumped."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-1-2",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Distracted Boyfriend",
+      "panels": [
+        {
+          "speaker": "The boyfriend",
+          "line": "Rig Supervisor",
+          "scene": "The man looking back with desire."
+        },
+        {
+          "speaker": "The woman in red",
+          "line": "AI-powered drilling optimization software",
+          "scene": "The attractive woman walking past."
+        },
+        {
+          "speaker": "The girlfriend",
+          "line": "Basic fire safety checklists",
+          "scene": "The shocked woman being left behind."
+        }
+      ],
+      "reasons": [],
+      "note": "this and the one above which is based on women in red, boyfriend and girlfriend setup are nice!"
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-1-5",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Environmental Officer",
+          "line": "We have a slow seep in the secondary containment. We need to patch the concrete.",
+          "scene": "An officer pointing at a puddle of oil forming around a base."
+        },
+        {
+          "speaker": "Operations Lead",
+          "line": "Patching is boring. I've just bought an array of real-time IoT sensors to track the leak in 4K!",
+          "scene": "The lead showing off a sleek tablet with colorful graphs and high-res maps."
+        },
+        {
+          "speaker": "Operations Lead",
+          "line": "Look at that data visualization. It's beautiful.",
+          "scene": "Close up of the tablet showing a huge red blotch, while in the background, the oil has reached the ocean."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-2-3",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Chief",
+          "line": "I know the paperwork is a nightmare. I'm implementing a streamlined digital portal to save you time.",
+          "scene": "The Chief presents a sleek tablet on a podium to a room of skeptical officers."
+        },
+        {
+          "speaker": "Officer",
+          "line": "Finally.",
+          "scene": "An officer sighs in relief, leaning back in their chair."
+        },
+        {
+          "speaker": "Captain",
+          "line": "The digital portal is live. Please print out the confirmation receipt and file it in triplicate.",
+          "scene": "The officer is now staring at a massive stack of printed papers next to the tablet."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-2-6",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Drake",
+      "panels": [
+        {
+          "speaker": "Drake disgusted",
+          "line": "Authorizing a cost-of-living adjustment for veteran officers",
+          "scene": "Drake looking away in disgust."
+        },
+        {
+          "speaker": "Drake pleased",
+          "line": "A memo stating we are 'exploring various incentive structures'",
+          "scene": "Drake smiling and pointing approvingly."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-3-2",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "We spent the entire renovation budget on cinematic mood lighting to hide the holes in the floor.",
+          "scene": "A wide shot of a gym with incredibly dramatic, high-end neon purple and blue lighting. In the foreground, a member is nearly tripping over a massive, jagged hole in the rubber flooring."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-3-7",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Two Buttons",
+      "panels": [
+        {
+          "speaker": "Button 1",
+          "line": "Buy new equipment and hire more staff",
+          "scene": "A red button on a console."
+        },
+        {
+          "speaker": "Button 2",
+          "line": "Require a notarized letter and 30 days' notice to cancel membership",
+          "scene": "The other red button."
+        },
+        {
+          "speaker": "The Manager",
+          "line": "Management sweating while deciding, then slamming the second button with full force.",
+          "scene": "A manager in a suit looking intensely stressed before decisively smashing Button 2."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-4-3",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Reading the 'Wellness Initiative' handbook at 3:00 AM.",
+          "scene": "A dark office. A single desk lamp illuminates a lawyer who looks like a ghost, reading a colorful brochure titled 'Work-Life Balance'."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-4-4",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "IT Manager",
+          "line": "This software is obsolete. We're migrating to a modern platform next month.",
+          "scene": "A lawyer staring at a screen with an 'Error 404' message; the IT manager stands behind them gesturing to a roadmap."
+        },
+        {
+          "speaker": "Lawyer",
+          "line": "Thank god. I can't spend another year fighting this interface.",
+          "scene": "The lawyer looks relieved, almost tearful."
+        },
+        {
+          "speaker": "IT Manager",
+          "line": "Migration complete. It's the same system, but now it's blue.",
+          "scene": "The lawyer is staring at the exact same error message, but the window border is now light blue."
+        }
+      ],
+      "reasons": [],
+      "note": "'Migration complete' would be better"
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-5-5",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Improving crew morale with a 'Wellness Wednesday' email during a double-shift week.",
+          "scene": "A exhausted flight attendant asleep standing up against a galley wall, while their phone screen glows with an email titled 'Tips for Better Sleep'."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T22:13:54.840Z/gemma-5-6",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "Too many lost bags. We need better visibility in the system.",
+          "scene": "A manager looking at a screen showing baggage icons moving on a map."
+        },
+        {
+          "speaker": "Developer",
+          "line": "Done. I've added real-time GPS tracking to every single suitcase.",
+          "scene": "The developer proudly presenting a high-tech dashboard with thousands of blinking dots."
+        },
+        {
+          "speaker": "Manager",
+          "line": "Amazing! Now we can watch in real-time as the bag is sent to the wrong continent.",
+          "scene": "The manager staring at a dot moving rapidly away from its destination toward another country."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    }
+  ],
+  "rejected": [
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-1-3",
+      "rating": 2,
+      "format": "multi_panel",
+      "template": "Impending Doom",
+      "panels": [
+        {
+          "speaker": "Warehouse lead",
+          "line": "This vintage shipment is double-boxed, climate-controlled, and on a dedicated lift.",
+          "scene": "Carefully secured pallet of high-value crates sits undisturbed. Lead inspects the tags with a satisfied nod."
+        },
+        {
+          "speaker": "Compliance officer",
+          "line": "",
+          "scene": "Foreground shows the crates perfectly safe. Background shows the officer creeping closer, stamp raised like a gavel, ready to strike the manifest."
+        },
+        {
+          "speaker": "Compliance officer",
+          "line": "Protocol says all cargo must be treated equally. We'll just drive.",
+          "scene": "The Fragile tags are now covered by identical Bulk stamps. Officer stands proudly as the forklift driver nods and engages the lift."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-1-6",
+      "rating": 1,
+      "format": "multi_panel",
+      "template": "Impending Doom",
+      "panels": [
+        {
+          "speaker": "Cold chain supervisor",
+          "line": "Temperature's been perfect for months. Nothing's thawed.",
+          "scene": "Inside a freezer aisle. Digital display reads -20°C. Supervisor checks a clipboard, satisfied."
+        },
+        {
+          "speaker": "Energy coordinator",
+          "line": "",
+          "scene": "Foreground shows frozen goods stacked neatly. Background shows the coordinator creeping toward the thermostat, finger hovering over the touchscreen labeled Dynamic Load Balancing."
+        },
+        {
+          "speaker": "Energy coordinator",
+          "line": "Perfect. Now it matches the rest of the building. We'll just trust the packaging.",
+          "scene": "Display flips to 22°C. Ice forms on the coordinator's tablet as the room warms. Coordinator stands smiling beside the adjusted dial."
+        }
+      ],
+      "reasons": [
+        "not funny"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-3-3",
+      "rating": 1,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Chef",
+          "line": "Out of stock. It's gone until tomorrow.",
+          "scene": "Chef slams a red \"86\" tag over a menu item on the digital pass screen."
+        },
+        {
+          "speaker": "Manager",
+          "line": "Reservations are full. Print the tickets.",
+          "scene": "The same \"86\" tag instantly flips back to green \"Available\" on the screen."
+        }
+      ],
+      "reasons": [
+        "not funny"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-3-7",
+      "rating": 1,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "Refunded. Process fixed. Won't happen again.",
+          "scene": "Manager stamps a kitchen ticket with a large red \"COMP\" stamp and files it away."
+        },
+        {
+          "speaker": "Manager",
+          "line": "Stamp it. The review says we care.",
+          "scene": "An identical ticket drops from the printer, with the exact same error noted in the margin."
+        }
+      ],
+      "reasons": [
+        "unclear"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T12:59:13.851Z/qwen-5-7",
+      "rating": 2,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Manager: \"We’re reviewing every submission this week.\" They drop identical requests in the overflowing box.",
+          "scene": "A large metal suggestion box sits on a break room table, visibly stuffed to the brim with folded paper. A manager holds a megaphone and gestures to a line of staff, each handing in a freshly folded, identically shaped paper."
+        }
+      ],
+      "reasons": [
+        "unclear"
+      ],
+      "note": ""
+    }
+  ]
 }

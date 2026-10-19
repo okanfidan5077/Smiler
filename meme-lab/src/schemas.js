@@ -51,6 +51,7 @@ export const explainerSchema = obj({
   explanation: str,
   target: str,
   clarity: int,
+  smile: int,
   confusing_parts: str,
 });
 

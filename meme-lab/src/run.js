@@ -6,14 +6,10 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { generateJSON } from "./llm.js";
 import { writerSchema, criticSchema, explainerSchema, matcherSchema } from "./schemas.js";
 import { renderReport } from "./report.js";
-
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const read = (p) => fs.readFileSync(path.join(root, p), "utf8");
-const readJSON = (p) => JSON.parse(read(p));
+import { root, readJSON, buildPrompts, blindView, GATE } from "./prompts.js";
 
 // ---------- args ----------
 const args = Object.fromEntries(
@@ -34,36 +30,7 @@ const freeShare = Number(args.free ?? 0.3);
 const configs = configNames.map((n) => ({ name: n, ...readJSON(`configs/${n}.json`) }));
 const sectors = readJSON("data/sectors.json");
 const mechanics = readJSON("data/mechanics.json");
-const examples = readJSON("data/examples.json");
-const feedback = readJSON("data/feedback.json");
-
-const fill = (tpl, vars) => tpl.replace(/\{\{(\w+)\}\}/g, (_, k) => vars[k] ?? "");
-
-const mechanicsText = mechanics.map((m) => `- **${m.name}**: ${m.shape} Example: ${m.example}`).join("\n");
-const panelsText = (panels) => panels.map((p) => `${p.speaker}: "${p.line}"`).join(" / ");
-const examplesText = examples
-  .map((e) => `- (${e.format}${e.template ? `, ${e.template}` : ""}; ${e.mechanic}) ${panelsText(e.panels)}`)
-  .join("\n");
-
-function feedbackText() {
-  const liked = feedback.liked.slice(-15);
-  const rejected = feedback.rejected.slice(-15);
-  if (!liked.length && !rejected.length) return "No feedback yet.";
-  const fmt = (f) =>
-    `- ${panelsText(f.panels)}${f.reasons?.length ? ` [${f.reasons.join(", ")}]` : ""}${f.note ? ` Note: ${f.note}` : ""}`;
-  return [
-    liked.length ? `Liked:\n${liked.map(fmt).join("\n")}` : "",
-    rejected.length ? `Rejected:\n${rejected.map(fmt).join("\n")}` : "",
-  ].filter(Boolean).join("\n\n");
-}
-
-const sharedVars = { mechanics: mechanicsText, examples: examplesText, feedback: feedbackText() };
-const prompts = {
-  writer: fill(read("prompts/writer.md"), sharedVars),
-  critic: fill(read("prompts/critic.md"), sharedVars),
-  explainer: read("prompts/explainer.md"),
-  matcher: read("prompts/matcher.md"),
-};
+const prompts = buildPrompts();
 
 // ---------- seeds ----------
 function mulberry32(a) {
@@ -81,13 +48,32 @@ const seeds = Array.from({ length: seedCount }, () => ({
   mechanic: args.mechanic ?? (rand() < freeShare ? "free" : pick(mechanics).name),
 }));
 
-// ---------- pipeline ----------
-const blindView = (c) => ({
-  format: c.format,
-  template: c.template,
-  panels: c.panels.map((p, i) => ({ panel: i + 1, image: p.scene, speaker: p.speaker, line: p.line })),
-});
+// ---------- validation ----------
+// Cheap structural checks before the critic: drafts that fail are marked invalid and skip review.
+const JUNK = new Set(["", "n/a", "na", "none", "null", "undefined", "-"]);
+const mechanicNames = new Set(mechanics.map((m) => m.name.toLowerCase()));
 
+function validate(c) {
+  const problems = [];
+  const template = String(c.template ?? "").trim();
+  if (c.format === "recast_template") {
+    if (JUNK.has(template.toLowerCase()) || mechanicNames.has(template.toLowerCase())) problems.push("recast_template without a real template name");
+  } else {
+    c.template = ""; // writers put "N/A", "null" or the mechanic here
+  }
+  const panels = c.panels ?? [];
+  const [min, max] = { single: [1, 1], multi_panel: [2, 4], recast_template: [1, 5] }[c.format] ?? [1, 5];
+  if (panels.length < min || panels.length > max) problems.push(`${c.format} needs ${min}-${max} panels, got ${panels.length}`);
+  panels.forEach((p, i) => {
+    for (const field of ["speaker", "line", "scene"]) {
+      if (JUNK.has(String(p[field] ?? "").trim().toLowerCase())) problems.push(`panel ${i + 1} has an empty ${field}`);
+    }
+  });
+  if (problems.length) c.invalid = problems.join("; ");
+  return c;
+}
+
+// ---------- pipeline ----------
 async function runSeed(config, seed, seedIdx, cost) {
   const track = (role, usage) => {
     const [pin, pout] = config[role].price ?? [0, 0];
@@ -103,11 +89,13 @@ async function runSeed(config, seed, seedIdx, cost) {
   ].join("\n");
   const w = await generateJSON(config.writer, { system: prompts.writer, user: writerUser, schema: writerSchema, kind: "writer" });
   track("writer", w.usage);
-  const concepts = w.data.concepts.map((c, i) => ({ id: `${config.name}-${seedIdx + 1}-${i + 1}`, config: config.name, seed, ...c }));
+  const concepts = w.data.concepts.map((c, i) => validate({ id: `${config.name}-${seedIdx + 1}-${i + 1}`, config: config.name, seed, ...c }));
+  const valid = concepts.filter((c) => !c.invalid);
+  if (!valid.length) return concepts;
 
   // The critic judges as a reader would: no premise, no self-assessment.
-  const criticUser = `Review these ${concepts.length} concepts:\n\n${JSON.stringify(
-    concepts.map((c) => ({ id: c.id, sector: c.sector, mechanic: c.mechanic, ...blindView(c) })),
+  const criticUser = `Review these ${valid.length} concepts:\n\n${JSON.stringify(
+    valid.map((c) => ({ id: c.id, sector: c.sector, mechanic: c.mechanic, ...blindView(c) })),
     null, 2,
   )}`;
   const cr = await generateJSON(config.critic, { system: prompts.critic, user: criticUser, schema: criticSchema, kind: "critic" });
@@ -115,13 +103,10 @@ async function runSeed(config, seed, seedIdx, cost) {
   const reviews = new Map(cr.data.reviews.map((r) => [r.id, r]));
   for (const c of concepts) c.review = reviews.get(c.id) ?? null;
 
-  const ranked = concepts
-    .filter((c) => c.review && c.review.verdict !== "cut")
-    .sort((a, b) => b.review.overall - a.review.overall)
-    .slice(0, keepCount);
-
-  for (const c of ranked) {
-    c.kept = true;
+  // Calibration on the user's ratings (src/calibrate.js): the blind reader's clarity tracks the user
+  // far better than the critic's overall score, so every reviewed concept gets the blind read and
+  // the reader is the gate. The critic only vetoes mean jokes and breaks ties.
+  for (const c of concepts.filter((c) => c.review && c.review.not_mean >= 4)) {
     const ex = await generateJSON(config.explainer, {
       system: prompts.explainer,
       user: JSON.stringify(blindView(c), null, 2),
@@ -130,7 +115,21 @@ async function runSeed(config, seed, seedIdx, cost) {
     });
     track("explainer", ex.usage);
     c.explain = ex.data;
+    c.passed = c.explain.clarity >= GATE.clarity && c.explain.smile >= GATE.smile;
+  }
 
+  const score = (c) => [c.explain.smile, c.review.visual_payoff, c.review.overall];
+  const ranked = concepts
+    .filter((c) => c.passed)
+    .sort((a, b) => {
+      const [x, y] = [score(a), score(b)];
+      return y[0] - x[0] || y[1] - x[1] || y[2] - x[2];
+    })
+    .slice(0, keepCount);
+
+  // The matcher is informational: it once said "no" on a meme the user rated 5.
+  for (const c of ranked) {
+    c.kept = true;
     const m = await generateJSON(config.matcher, {
       system: prompts.matcher,
       user: `Intended joke: ${c.premise}\n\nReader's explanation: ${c.explain.explanation}`,
@@ -139,7 +138,6 @@ async function runSeed(config, seed, seedIdx, cost) {
     });
     track("matcher", m.usage);
     c.match = m.data;
-    c.passed = c.match.match !== "no" && c.explain.clarity >= 3;
   }
   return concepts;
 }
@@ -163,7 +161,7 @@ for (const config of configs) {
       const concepts = await runSeed(config, seed, i, cost);
       all.push(...concepts);
       const kept = concepts.filter((c) => c.kept);
-      console.log(`${concepts.length} written, ${kept.length} kept, ${kept.filter((c) => c.passed).length} passed`);
+      console.log(`${concepts.length} written, ${concepts.filter((c) => c.invalid).length} invalid, ${kept.length} kept, ${kept.filter((c) => c.passed).length} passed`);
     } catch (err) {
       console.log(`ERROR: ${err.message}`);
       errors.push({ seed: i + 1, message: err.message });
@@ -180,7 +178,7 @@ console.log("\nSummary:");
 for (const r of runs) {
   const mine = all.filter((c) => c.config === r.config);
   console.log(
-    `  ${r.config}: ${mine.length} written, ${mine.filter((c) => c.kept).length} kept, ${mine.filter((c) => c.passed).length} passed, ` +
+    `  ${r.config}: ${mine.length} written, ${mine.filter((c) => c.invalid).length} invalid, ${mine.filter((c) => c.kept).length} kept, ${mine.filter((c) => c.passed).length} passed, ` +
       `${r.tokens} tokens, ~$${r.usd.toFixed(3)}, ${r.seconds}s${r.errors.length ? `, ${r.errors.length} errors` : ""}`,
   );
 }

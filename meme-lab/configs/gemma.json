@@ -1,0 +1,7 @@
+{
+  "description": "All roles on Gemma 4 31B (dense) via local Ollama. Set OLLAMA_URL if Ollama runs on another machine.",
+  "writer":    { "provider": "ollama", "model": "gemma4:31b", "temperature": 1.0, "think": false },
+  "critic":    { "provider": "ollama", "model": "gemma4:31b", "temperature": 0.2, "think": false },
+  "explainer": { "provider": "ollama", "model": "gemma4:31b", "temperature": 0.3, "think": false },
+  "matcher":   { "provider": "ollama", "model": "gemma4:31b", "temperature": 0.0, "think": false }
+}

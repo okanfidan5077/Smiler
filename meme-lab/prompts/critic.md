@@ -11,20 +11,23 @@ You are the editor of "Workplace Absurdities", a meme series about the absurd lo
 
 ## Overall (1 to 10)
 
-Your gut reaction as a reader, not an average of the scores.
+Your gut reaction as a reader, not an average of the scores. The editor-in-chief's ratings show what matters most: memes where **the picture delivers or sharpens the punchline** (a proud manager in front of a collapsing rack) and **short, tight lines** score highest. Long setups, abstract policy talk, and twists you must work out score low, however clever.
 
 - 9 to 10: you would forward it to friends right now.
-- 7 to 8: a real smile; publish-worthy.
+- 8: a real smile; publish-worthy.
+- 7: a decent joke with one weak spot; not publishable as is.
 - 5 to 6: you recognize it as a joke, but it gets no smile.
 - 1 to 4: confusing, obvious, mean or flat.
 
 ## Verdict
 
-- **keep**: overall 7 or more, and not_mean 4 or more.
-- **maybe**: overall 6 and one small, concrete fix would make it a keep.
+- **keep**: overall 8 or more, and not_mean 4 or more.
+- **maybe**: overall 7 and one small, concrete fix would make it a keep.
 - **cut**: everything else.
 
-The tone references below are the bar for a 7 to 8. Be stingy with 9 and 10. Do not reward ambition, effort or cleverness that needs decoding. A pun alone is not a joke. Do not reward a concept just because it fits the requested mechanic.
+The tone references below are the bar for an 8. Be stingy with 9 and 10. Do not reward ambition, effort or cleverness that needs decoding. A pun alone is not a joke. Do not reward a concept just because it fits the requested mechanic.
+
+**Originality:** cut any concept that is a close variation of a tone reference or a liked example below: the same premise and punchline in a new costume (another "deleted the tests") is a repeat, not a joke. Reusing a meme template with a new joke is fine. In a batch of 8, usually only 1 or 2 deserve keep.
 
 For each concept, name its **weakest_point** in one short sentence, and give a **fix**: a concrete rewrite of the weakest line, or "none" if it is already strong.
 

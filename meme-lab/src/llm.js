@@ -73,8 +73,15 @@ async function callOllama(role, system, user, schema) {
   });
   if (!res.ok) throw new Error(`Ollama ${res.status}: ${await res.text()}`);
   const json = await res.json();
+  let data;
+  try {
+    data = JSON.parse(json.message.content);
+  } catch {
+    // Some models ignore the schema when thinking is off (e.g. qwen3.6 on Ollama 0.30).
+    throw new Error(`${role.model} returned non-JSON (try "think": true): ${json.message.content.slice(0, 80)}`);
+  }
   return {
-    data: JSON.parse(json.message.content),
+    data,
     usage: { input: json.prompt_eval_count ?? 0, output: json.eval_count ?? 0 },
   };
 }
@@ -110,7 +117,7 @@ function callMock(kind, user) {
     return { data: { reviews }, usage };
   }
   if (kind === "explainer") {
-    return { data: { explanation: "The fix removes the feedback instead of the problem.", target: "metric-driven management", clarity: 4, confusing_parts: "none" }, usage };
+    return { data: { explanation: "The fix removes the feedback instead of the problem.", target: "metric-driven management", clarity: 5, smile: 3, confusing_parts: "none" }, usage };
   }
   return { data: { match: "yes", reason: "Same joke." }, usage };
 }
