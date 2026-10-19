@@ -97,7 +97,8 @@ function callMock(kind, user) {
       template: "",
       sector,
       problem: `mock problem ${i + 1}`,
-      mechanic: "Absurd Fix",
+      mechanic: ["Absurd Fix", "Endless Cycle"][i % 2],
+      explore: i % 2 === 1,
       premise: `Mock joke ${i + 1}: the fix removes the thing the ${sector} exists for.`,
       panels: [
         { speaker: "Manager", line: `Complaints at the ${sector} are up 300%.`, scene: "Manager pointing at a red chart." },

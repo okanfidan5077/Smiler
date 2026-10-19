@@ -74,7 +74,10 @@ function validate(c) {
 }
 
 // ---------- pipeline ----------
-async function runSeed(config, seed, seedIdx, cost) {
+const MECHANIC_CAP = 2;
+
+// keptMechanics counts picks per mechanic across this config's whole run.
+async function runSeed(config, seed, seedIdx, cost, keptMechanics) {
   const track = (role, usage) => {
     const [pin, pout] = config[role].price ?? [0, 0];
     cost.usd += (usage.input * pin + usage.output * pout) / 1e6;
@@ -118,14 +121,26 @@ async function runSeed(config, seed, seedIdx, cost) {
     c.passed = c.explain.clarity >= GATE.clarity && c.explain.smile >= GATE.smile;
   }
 
+  // Selection: the best proven concept and the best experiment first, then the rest by score.
+  // A mechanic may fill at most MECHANIC_CAP picks per run, so one working shape can't take over
+  // the feed (round 3: 7 of 12 picks were the same "cosmetic fix" joke).
   const score = (c) => [c.explain.smile, c.review.visual_payoff, c.review.overall];
-  const ranked = concepts
-    .filter((c) => c.passed)
-    .sort((a, b) => {
-      const [x, y] = [score(a), score(b)];
-      return y[0] - x[0] || y[1] - x[1] || y[2] - x[2];
-    })
-    .slice(0, keepCount);
+  const byScore = (a, b) => {
+    const [x, y] = [score(a), score(b)];
+    return y[0] - x[0] || y[1] - x[1] || y[2] - x[2];
+  };
+  const mech = (c) => String(c.mechanic).trim().toLowerCase();
+  const open = (c) => (keptMechanics.get(mech(c)) ?? 0) < MECHANIC_CAP;
+  const passing = concepts.filter((c) => c.passed).sort(byScore);
+  const ranked = [];
+  const take = (c) => {
+    if (!c || ranked.includes(c) || ranked.length >= keepCount || !open(c)) return;
+    ranked.push(c);
+    keptMechanics.set(mech(c), (keptMechanics.get(mech(c)) ?? 0) + 1);
+  };
+  take(passing.find((c) => !c.explore && open(c)));
+  take(passing.find((c) => c.explore && open(c)));
+  for (const c of passing) take(c);
 
   // The matcher is informational: it once said "no" on a meme the user rated 5.
   for (const c of ranked) {
@@ -155,13 +170,17 @@ for (const config of configs) {
   const cost = { usd: 0, tokens: 0 };
   const t0 = Date.now();
   const errors = [];
+  const keptMechanics = new Map();
   for (const [i, seed] of seeds.entries()) {
     process.stdout.write(`[${config.name}] seed ${i + 1}/${seeds.length} ${seed.sector} × ${seed.mechanic} ... `);
     try {
-      const concepts = await runSeed(config, seed, i, cost);
+      const concepts = await runSeed(config, seed, i, cost, keptMechanics);
       all.push(...concepts);
       const kept = concepts.filter((c) => c.kept);
-      console.log(`${concepts.length} written, ${concepts.filter((c) => c.invalid).length} invalid, ${kept.length} kept, ${kept.filter((c) => c.passed).length} passed`);
+      console.log(
+        `${concepts.length} written (${concepts.filter((c) => c.explore).length} experiments), ${concepts.filter((c) => c.invalid).length} invalid, ` +
+          `${concepts.filter((c) => c.passed).length} passed, ${kept.length} kept (${kept.filter((c) => c.explore).length} experiments)`,
+      );
     } catch (err) {
       console.log(`ERROR: ${err.message}`);
       errors.push({ seed: i + 1, message: err.message });

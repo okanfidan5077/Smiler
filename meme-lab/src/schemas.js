@@ -19,6 +19,7 @@ export const writerSchema = obj({
       sector: str,
       problem: str,
       mechanic: str,
+      explore: { type: "boolean", description: "true for an experiment: a shape, mechanic or format the editor's liked list has not proven yet" },
       premise: str,
       panels: {
         type: "array",

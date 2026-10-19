@@ -6,5 +6,6 @@
   { "name": "Ironic Inference", "shape": "An outsider reads a bad sign as a good sign.", "example": "\"Your staff work 16-hour shifts.\" \"Business must be booming!\"" },
   { "name": "Impending Doom", "shape": "Disaster sneaks up on something calm and unaware.", "example": "The infrastructure team creeps up on the sleeping website, holding an update like a club." },
   { "name": "Endless Cycle", "shape": "The problem that was removed walks right back in.", "example": "Fraud is thrown out of the company and is back at the bar in the next frame." },
-  { "name": "Misdirected Effort", "shape": "Heroic effort aimed at the wrong place achieves nothing.", "example": "The security team shields one side while the cyber attacks hit from the other." }
+  { "name": "Misdirected Effort", "shape": "Heroic effort aimed at the wrong place achieves nothing.", "example": "The security team shields one side while the cyber attacks hit from the other." },
+  { "name": "Cosmetic Cure", "shape": "A real, painful problem gets a decorative fix, proudly presented while the problem continues in plain view.", "example": "\"We couldn't afford to repair the MRI, but the lobby got a 4K waterfall wall.\" (broken MRI under a tarp behind the screen)" }
 ]

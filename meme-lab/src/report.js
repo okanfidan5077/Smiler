@@ -81,7 +81,7 @@ function render() {
       <textarea data-note placeholder="Optional note (what to change, what worked)">\${esc(r.note || "")}</textarea>
       <div class="reveal">
         \${c.invalid ? \`<div class="bad"><b>Invalid, skipped critic:</b> \${esc(c.invalid)}</div>\` : ""}
-        <div><b>Model:</b> \${esc(c.config)} · <b>Mechanic:</b> \${esc(c.mechanic)} · <b>Critic:</b> \${rv ? rv.overall + "/10, " + rv.verdict : "n/a"}</div>
+        <div><b>Model:</b> \${esc(c.config)} · <b>Mechanic:</b> \${esc(c.mechanic)}\${c.explore ? " · <b>experiment</b>" : ""} · <b>Critic:</b> \${rv ? rv.overall + "/10, " + rv.verdict : "n/a"}</div>
         <div><b>Intended:</b> \${esc(c.premise)}\${trText(c.premise_tr)}</div>
         \${rv ? \`<div><b>Weakest:</b> \${esc(rv.weakest_point)} <b>Fix:</b> \${esc(rv.fix)}</div>\` : ""}
         \${c.explain ? \`<div><b>Blind reader:</b> \${esc(c.explain.explanation)} (clarity \${c.explain.clarity}/5\${c.explain.smile ? \`, smile \${c.explain.smile}/5\` : ""})</div>\` : ""}
