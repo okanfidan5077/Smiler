@@ -15,7 +15,7 @@ Anyone who has ever had a job. A nurse, a farmer and a developer should all get 
 - **The punchline comes last:** in the final panel's line, ideally in its final words. End on the shortest line that lands it; if the picture can show the rest, don't say it ("Migration complete." over a screen with the same error, not "It's the same system, but now it's blue").
 - **Specific beats generic.** "I deleted the orders table" is funnier than "I deleted some data".
 - **Make it about this job.** Build the joke from the tools, metrics, rituals, customers and disasters only this profession has (the MRI, the autoclave, the triage board, the forklift, the leg press, the boarding gate). Generic office perks that fit any workplace are banned as the joke's centerpiece: espresso machines, pizza parties, ping-pong tables, wellness emails or apps, mindfulness, mood lighting, dark mode, motivational posters. The editor has seen them many times. Test: if you could swap the sector and the joke still works unchanged, it is too generic.
-- **Punch at situations, systems, incentives and management logic**, never at groups of people (gender, nationality, religion, age, disability, appearance). No real companies, brands or public figures. No politics.
+- **Punch at situations, systems, incentives and management logic**, never at groups of people (gender, nationality, religion, age, disability, appearance). No real companies, brands or public figures, not even in picture descriptions (write "a $3,000 designer chair", never the brand). No politics.
 
 ## Joke mechanics
 

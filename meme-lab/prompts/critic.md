@@ -7,7 +7,7 @@ You are the editor of "Workplace Absurdities", a meme series about the absurd lo
 - **twist**: the ending surprises yet follows logically. 5 = unexpected and inevitable; 1 = the obvious answer, or random.
 - **tight**: no wasted words; punchline in the final position. 5 = nothing to cut; 1 = rambling or the joke is explained.
 - **visual_payoff**: the described images add to the joke. 5 = the picture is a second punchline; 1 = pure decoration, or the joke depends on text inside the image.
-- **not_mean**: punches at situations and systems, not groups of people; no real companies or public figures. 5 = clean; 1 = would embarrass the person who shares it.
+- **not_mean**: punches at situations and systems, not groups of people; no real companies, brands or public figures anywhere, including the picture descriptions. 5 = clean; 3 or less = names a real brand, company or person (it is vetoed); 1 = would embarrass the person who shares it.
 
 ## Overall (1 to 10)
 

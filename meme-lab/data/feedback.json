@@ -891,6 +891,190 @@
       ],
       "reasons": [],
       "note": ""
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-1-5",
+      "rating": 4,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The Manager celebrating the new $10k luxury rowing fleet in the sauna-temperature gym.",
+          "scene": "A beaming manager stands with thumbs up next to five gleaming, high-tech rowers. In the background, a client is literally melting, leaning against a wall and fanning themselves with a towel under a dead, dusty ceiling fan."
+        }
+      ],
+      "reasons": [
+        "seen it"
+      ],
+      "note": "similar wasted money format"
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-1-10",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The gym's new marketing campaign after they fired the remaining floor staff.",
+          "scene": "A professional poster that says 'PURE INDEPENDENCE: No Spotters. No Help. Just You and the Iron.' In the background, a member is currently trapped under a barbell, staring at the ceiling."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-2-1",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Status: Pothole repair complete.",
+          "scene": "A proud city worker stands with a paintbrush. He has painted a beautiful, bright yellow 'Caution' star and a decorative border around a massive, deep pothole that is still clearly there."
+        }
+      ],
+      "reasons": [],
+      "note": "kinda new format"
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-2-7",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Distracted Boyfriend",
+      "panels": [
+        {
+          "speaker": "The boyfriend",
+          "line": "City Council",
+          "scene": "Looking back with excitement at the woman in red."
+        },
+        {
+          "speaker": "The woman in red",
+          "line": "A New Decorative Fountain for the Plaza",
+          "scene": "Walking past, looking confident and shiny."
+        },
+        {
+          "speaker": "The girlfriend",
+          "line": "The bridge that is literally falling apart",
+          "scene": "Looking betrayed and shocked."
+        }
+      ],
+      "reasons": [],
+      "note": "red woman case with different nice scenario"
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-3-1",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Job Ad",
+          "line": "Work in a cutting-edge clinic with the latest medical technology!",
+          "scene": "A glossy, high-end dental office. Everything is white, chrome, and futuristic. A smiling dentist holds a digital tablet."
+        },
+        {
+          "speaker": "Assistant",
+          "line": "The autoclave died at 7:50 AM. We have a full schedule.",
+          "scene": "A dim, cramped sterilization room. An assistant is frantically scrubbing metal instruments by hand in a sink, looking exhausted and panicked."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-4-2",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Drake",
+      "panels": [
+        {
+          "speaker": "Drake (disgust)",
+          "line": "Recutting the custom windows to match the actual opening",
+          "scene": "A blueprint showing a window that clearly doesn't fit the wall."
+        },
+        {
+          "speaker": "Drake (approval)",
+          "line": "Widening the wall with a sledgehammer until the window fits",
+          "scene": "A worker happily smashing a concrete wall to make it larger."
+        }
+      ],
+      "reasons": [],
+      "note": "approve wrong alternative format"
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-4-8",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Worker",
+          "line": "Management said the duct tape and prayers would hold until the inspection.",
+          "scene": "POV from someone looking up at a massive ceiling beam. The gap is filled with layers of silver duct tape, and one small piece of tape is slowly peeling away with a loud 'creak' sound effect."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-5-3",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Zookeeper",
+          "line": "If I scrub the concrete for an hour, it'll finally look professional for the board visit.",
+          "scene": "A determined zookeeper scrubbing a concrete floor with a brush; the area is sparkling clean."
+        },
+        {
+          "speaker": "Zookeeper",
+          "line": "He waited until I finished the last corner.",
+          "scene": "Same scene. The zookeeper is leaning on their brush, staring in defeat at a massive pile of rhino dung covering 80% of the clean floor."
+        }
+      ],
+      "reasons": [],
+      "note": "nice different format!"
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-5-9",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Zookeeper",
+          "line": "I'll place the lettuce inside the crate. He has no choice now.",
+          "scene": "The zookeeper carefully places a piece of romaine lettuce at the very back of a plastic crate."
+        },
+        {
+          "speaker": "Zookeeper",
+          "line": "He just reached his neck in, took the leaf, and backed out without moving his feet.",
+          "scene": "The tortoise is outside the crate; only its long neck is retracted, and it is chewing slowly with a smug expression."
+        }
+      ],
+      "reasons": [],
+      "note": "similar to previous one,"
+    },
+    {
+      "id": "2026-10-25T17:43:45.345Z/gemma-6-1",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The administration finally approved the request for a more ergonomic workspace.",
+          "scene": "A shot of a tiny, cramped storage closet in a dimly lit concrete basement. A professor is squeezed between stacks of old dusty folders and a water pipe. On the small desk sits an incredibly high-end, futuristic $3,000 Herman Miller ergonomic chair that takes up 80% of the remaining floor space."
+        }
+      ],
+      "reasons": [
+        "seen it"
+      ],
+      "note": "similar wasted money format"
     }
   ],
   "rejected": [
