@@ -30,6 +30,9 @@ const freeShare = Number(args.free ?? 0.3);
 const configs = configNames.map((n) => ({ name: n, ...readJSON(`configs/${n}.json`) }));
 const sectors = readJSON("data/sectors.json");
 const mechanics = readJSON("data/mechanics.json");
+const formats = readJSON("data/formats.json");
+const formatByName = new Map(formats.map((f) => [f.name.toLowerCase(), f]));
+const problemBank = fs.existsSync(path.join(root, "data/problems.json")) ? readJSON("data/problems.json") : {};
 const prompts = buildPrompts();
 
 // ---------- seeds ----------
@@ -43,10 +46,27 @@ function mulberry32(a) {
 }
 const rand = mulberry32(rngSeed);
 const pick = (list) => list[Math.floor(rand() * list.length)];
-const seeds = Array.from({ length: seedCount }, () => ({
-  sector: args.sector ?? pick(sectors),
-  mechanic: args.mechanic ?? (rand() < freeShare ? "free" : pick(mechanics).name),
-}));
+const shuffle = (list) => {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+// Layouts are dealt from a shuffled catalog so one run covers as many as possible (user: "as many
+// formats as possible"); problems come from the sector's bank so jokes stay specific to the job.
+const deck = shuffle(formats);
+const layoutsPerSeed = Number(args.layouts ?? 3);
+const seeds = Array.from({ length: seedCount }, (_, i) => {
+  const sector = args.sector ?? pick(sectors);
+  return {
+    sector,
+    mechanic: args.mechanic ?? (rand() < freeShare ? "free" : pick(mechanics).name),
+    layouts: Array.from({ length: layoutsPerSeed }, (_, k) => deck[(i * layoutsPerSeed + k) % deck.length].name),
+    problems: shuffle(problemBank[sector] ?? []).slice(0, 4),
+  };
+});
 
 // ---------- validation ----------
 // Cheap structural checks before the critic: drafts that fail are marked invalid and skip review.
@@ -55,6 +75,15 @@ const mechanicNames = new Set(mechanics.map((m) => m.name.toLowerCase()));
 
 function validate(c) {
   const problems = [];
+  // A catalog layout fixes the structure: its format, and for recasts the template name.
+  const layout = formatByName.get(String(c.layout ?? "").trim().toLowerCase());
+  if (layout) {
+    c.layout = layout.name;
+    c.format = layout.format;
+    if (layout.format === "recast_template") c.template = layout.name;
+  } else if (!/^new:/i.test(String(c.layout ?? "").trim())) {
+    problems.push(`unknown layout "${c.layout}" (use a catalog name or "New: ...")`);
+  }
   const template = String(c.template ?? "").trim();
   if (c.format === "recast_template") {
     if (JUNK.has(template.toLowerCase()) || mechanicNames.has(template.toLowerCase())) problems.push("recast_template without a real template name");
@@ -84,12 +113,20 @@ async function runSeed(config, seed, seedIdx, cost, keptMechanics) {
     cost.tokens += usage.input + usage.output;
   };
 
+  const layoutText = (name) => {
+    const f = formatByName.get(name.toLowerCase());
+    return `- **${f.name}** (${f.format}): ${f.layout}`;
+  };
   const writerUser = [
     `Sector: ${seed.sector}`,
-    `Problem: ${seed.problem ?? "choose realistic problems from this sector"}`,
+    seed.problems.length
+      ? `Real problems in this job (use these, or others just as specific):\n${seed.problems.map((p) => `- ${p}`).join("\n")}`
+      : "Problems: choose specific, real problems from this job.",
     `Mechanic: ${seed.mechanic}`,
+    `Assigned layouts (spread the proven half across these):\n${seed.layouts.map(layoutText).join("\n")}`,
+    `Experiments may use any other catalog layout, or invent one named "New: <name>". Catalog: ${formats.map((f) => f.name).join(", ")}.`,
     `Write ${perSeed} concepts.`,
-  ].join("\n");
+  ].join("\n\n");
   const w = await generateJSON(config.writer, { system: prompts.writer, user: writerUser, schema: writerSchema, kind: "writer" });
   track("writer", w.usage);
   const concepts = w.data.concepts.map((c, i) => validate({ id: `${config.name}-${seedIdx + 1}-${i + 1}`, config: config.name, seed, ...c }));
@@ -122,21 +159,23 @@ async function runSeed(config, seed, seedIdx, cost, keptMechanics) {
   }
 
   // Selection: the best proven concept and the best experiment first, then the rest by score.
-  // A mechanic may fill at most MECHANIC_CAP picks per run, so one working shape can't take over
-  // the feed (round 3: 7 of 12 picks were the same "cosmetic fix" joke).
+  // A mechanic may fill at most MECHANIC_CAP picks per run and a layout one, so one working shape
+  // can't take over the feed (round 3: 7 of 12 picks were the same "cosmetic fix" joke).
   const score = (c) => [c.explain.smile, c.review.visual_payoff, c.review.overall];
   const byScore = (a, b) => {
     const [x, y] = [score(a), score(b)];
     return y[0] - x[0] || y[1] - x[1] || y[2] - x[2];
   };
   const mech = (c) => String(c.mechanic).trim().toLowerCase();
-  const open = (c) => (keptMechanics.get(mech(c)) ?? 0) < MECHANIC_CAP;
+  const lay = (c) => `layout:${String(c.layout).trim().toLowerCase()}`;
+  const open = (c) => (keptMechanics.get(mech(c)) ?? 0) < MECHANIC_CAP && !keptMechanics.has(lay(c));
   const passing = concepts.filter((c) => c.passed).sort(byScore);
   const ranked = [];
   const take = (c) => {
     if (!c || ranked.includes(c) || ranked.length >= keepCount || !open(c)) return;
     ranked.push(c);
     keptMechanics.set(mech(c), (keptMechanics.get(mech(c)) ?? 0) + 1);
+    keptMechanics.set(lay(c), 1); // each layout at most once per run
   };
   take(passing.find((c) => !c.explore && open(c)));
   take(passing.find((c) => c.explore && open(c)));
@@ -162,7 +201,7 @@ const outDir = path.join(root, "results", started.toISOString().replace(/[:.]/g,
 fs.mkdirSync(outDir, { recursive: true });
 
 console.log(`Seeds (rng ${rngSeed}):`);
-seeds.forEach((s, i) => console.log(`  ${i + 1}. ${s.sector} × ${s.mechanic}`));
+seeds.forEach((s, i) => console.log(`  ${i + 1}. ${s.sector} × ${s.mechanic} [${s.layouts.join(", ")}]${s.problems.length ? "" : " (no problem bank)"}`));
 
 const all = [];
 const runs = [];

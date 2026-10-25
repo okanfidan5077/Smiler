@@ -74,7 +74,7 @@ function render() {
     const r = ratings[c.id] || {};
     const rv = c.review;
     return \`<article class="card \${c.kept ? "" : "cut"}" data-id="\${c.id}">
-      <div class="meta">\${esc(c.sector)} · \${esc(c.format.replace("_", " "))}\${c.template ? " · " + esc(c.template) : ""}</div>
+      <div class="meta">\${esc(c.sector)} · \${esc(c.format.replace("_", " "))}\${c.layout ? " · " + esc(c.layout) : c.template ? " · " + esc(c.template) : ""}</div>
       \${c.panels.map((p) => \`<div class="panel"><div class="scene">\${esc(p.scene)}\${trText(p.tr?.scene)}</div><div class="line"><b>\${esc(p.speaker)}:</b> \${esc(p.line)}\${trText(p.tr?.line)}</div></div>\`).join("")}
       <div class="rate">\${[1, 2, 3, 4, 5].map((n) => \`<button data-rate="\${n}" class="\${r.rating === n ? "on" : ""}">\${n}</button>\`).join("")}</div>
       <div class="chips">\${CHIPS.map((ch) => \`<button data-chip="\${ch}" class="\${(r.reasons || []).includes(ch) ? "on" : ""}">\${ch}</button>\`).join("")}</div>

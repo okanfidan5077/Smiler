@@ -94,6 +94,7 @@ function callMock(kind, user) {
     const n = Number(/Write (\d+)/.exec(user)?.[1] ?? 3);
     const concepts = Array.from({ length: n }, (_, i) => ({
       format: "multi_panel",
+      layout: ["Fixed It Dialogue", "Escalation Ladder", "Meeting Agenda", "Clock Time-Lapse"][i % 4],
       template: "",
       sector,
       problem: `mock problem ${i + 1}`,

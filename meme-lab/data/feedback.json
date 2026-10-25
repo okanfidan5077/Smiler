@@ -672,6 +672,225 @@
       ],
       "reasons": [],
       "note": ""
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-1-2",
+      "rating": 4,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The chief finally secured funding to modernize the patrol fleet.",
+          "scene": "A proud Police Chief stands with thumbs up next to a police cruiser. The car has brand new, shiny neon LED light bars and a high-gloss paint job, but it is resting on cinder blocks because the wheels are missing."
+        }
+      ],
+      "reasons": [
+        "seen it"
+      ],
+      "note": "similar format"
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-1-8",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Two Buttons",
+      "panels": [
+        {
+          "speaker": "Button 1",
+          "line": "Fix the crumbling precinct walls",
+          "scene": "A red button."
+        },
+        {
+          "speaker": "Button 2",
+          "line": "Buy an expensive new espresso machine for the breakroom",
+          "scene": "A blue button."
+        },
+        {
+          "speaker": "The Manager",
+          "line": "Chief of Police",
+          "scene": "The Chief is sweating, looking intensely at both buttons, then slams the 'espresso machine' button with both hands."
+        }
+      ],
+      "reasons": [
+        "too long",
+        "seen it"
+      ],
+      "note": "similar in previous session  but good blue or red button format"
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-2-3",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "Our average handle time is too high. We need more speed!",
+          "scene": "The manager is pacing aggressively in front of a row of frustrated agents."
+        },
+        {
+          "speaker": "Manager",
+          "line": "I've equipped everyone with aerospace-grade, low-latency noise-canceling headsets.",
+          "scene": "The agents are now wearing massive, futuristic, high-tech headsets that look like they belong in a sci-fi movie."
+        },
+        {
+          "speaker": "Agent",
+          "line": "Great. Now I can hear the customer's silence in crystal clear HD while the system reboots.",
+          "scene": "Close up of the agent wearing the fancy headset, staring at a computer screen that says 'System Error: Loading... 1%'"
+        }
+      ],
+      "reasons": [
+        "seen it"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-2-7",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Agent",
+          "line": "The CRM is unusable. It freezes every time I open a customer file.",
+          "scene": "An agent gesturing wildly at a screen that is frozen with an hourglass icon."
+        },
+        {
+          "speaker": "Manager",
+          "line": "I've heard your feedback. We've launched a complete UI overhaul for a modern experience.",
+          "scene": "The manager stands proudly, pointing to the screen."
+        },
+        {
+          "speaker": "Agent",
+          "line": "It's still frozen. But now it's in Dark Mode.",
+          "scene": "The same error/frozen screen, but the background is now sleek black and neon purple."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-3-7",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The 'Known Issues' list after the fifth 'Final Stability Patch'.",
+          "scene": "A close-up of a document. The list of bugs is so long it trails off the page and curls onto the floor like a carpet."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-4-1",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "When the safety inspector arrives during the building's collapse.",
+          "scene": "A group of workers are standing in a circle, intensely debating and adjusting the strap on one worker's high-visibility vest to make it perfectly straight. Directly behind them, the entire second floor of the building is pancaking down in a cloud of dust."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-4-8",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The project manager's solution to the leaning tower problem: adjusting the horizon on the site photos.",
+          "scene": "A proud manager shows a tablet with a photo of a building that looks perfectly straight. In the background, the actual building is tilting precariously at 15 degrees."
+        }
+      ],
+      "reasons": [],
+      "note": "similar to above but good"
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-5-3",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The manager celebrating a 20% increase in daily patient throughput.",
+          "scene": "A beaming manager stands with thumbs up. Behind him, two dental assistants are slumped against the wall, eyes glazed over, staring into space, surrounded by mountains of used gauze and instruments."
+        }
+      ],
+      "reasons": [],
+      "note": "similar format"
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-5-6",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Distracted Boyfriend",
+      "panels": [
+        {
+          "speaker": "The boyfriend",
+          "line": "Clinic Owner",
+          "scene": "A man in a white coat looking back with longing."
+        },
+        {
+          "speaker": "The woman in red",
+          "line": "AI-Powered Tooth Scanning Robot",
+          "scene": "A sleek, futuristic robot arm."
+        },
+        {
+          "speaker": "The girlfriend",
+          "line": "Leaking ceiling in Operatory 2",
+          "scene": "A small woman representing a dripping pipe and a bucket on the floor."
+        }
+      ],
+      "reasons": [],
+      "note": "woman in red format"
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-6-3",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Crying Cat Interview",
+      "panels": [
+        {
+          "speaker": "Interviewer",
+          "line": "\"Your entire staff has deep dark circles under their eyes and can barely speak.\"",
+          "scene": "The interviewer is looking at a row of gym employees who are leaning against the wall, staring blankly into space."
+        },
+        {
+          "speaker": "Interviewer",
+          "line": "\"Your training programs must be absolutely brutal!\"",
+          "scene": "Close up of the interviewer smiling broadly, while in the background a staff member is slowly sliding down the wall to the floor."
+        }
+      ],
+      "reasons": [
+        "seen it"
+      ],
+      "note": "again good one and format is similar but scenario is different"
+    },
+    {
+      "id": "2026-10-19T23:25:21.538Z/gemma-6-7",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Visitor",
+          "line": "\"I love how you integrate your workout into the rest of the building!\"",
+          "scene": "A visitor stands in a narrow hallway where people are doing push-ups and stretching against the walls because the main gym floor is packed like a subway car."
+        }
+      ],
+      "reasons": [],
+      "note": ""
     }
   ],
   "rejected": [

@@ -27,7 +27,9 @@ Your gut reaction as a reader, not an average of the scores. The editor-in-chief
 
 The tone references below are the bar for an 8. Be stingy with 9 and 10. Do not reward ambition, effort or cleverness that needs decoding. A pun alone is not a joke. Do not reward a concept just because it fits the requested mechanic.
 
-**Originality:** cut any concept that is a close variation of a tone reference or a liked example below: the same premise and punchline in a new costume (another "deleted the tests") is a repeat, not a joke. Reusing a meme template with a new joke is fine. In a batch of 8, usually only 1 or 2 deserve keep.
+**Originality:** cut any concept that is a close variation of a tone reference or a liked example below: the same premise and punchline in a new costume (another "deleted the tests") is a repeat, not a joke. Reusing a meme template with a new joke is fine.
+
+**Specific to the job:** a joke built on a generic office perk (espresso machine, pizza party, wellness app or email, mindfulness, mood lighting, dark mode) or that would work unchanged in any sector scores at most 6 overall. The best jokes use things only this profession has. In a batch of 8, usually only 1 or 2 deserve keep.
 
 For each concept, name its **weakest_point** in one short sentence, and give a **fix**: a concrete rewrite of the weakest line, or "none" if it is already strong.
 

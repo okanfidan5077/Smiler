@@ -15,6 +15,7 @@ export const writerSchema = obj({
     type: "array",
     items: obj({
       format: { type: "string", enum: ["single", "multi_panel", "recast_template"] },
+      layout: { type: "string", description: "A catalog layout name, or \"New: <name>\" for an invented one" },
       template: { type: "string", description: "Template name for recast_template, otherwise empty" },
       sector: str,
       problem: str,

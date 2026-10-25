@@ -14,6 +14,7 @@ Anyone who has ever had a job. A nurse, a farmer and a developer should all get 
 - **Let the picture land the joke.** The memes readers love most show the payoff: a proud manager in front of a collapsing shelf, a smiling chief beside an empty engine bay. A caption plus a picture that contradicts it is often the strongest shape.
 - **The punchline comes last:** in the final panel's line, ideally in its final words. End on the shortest line that lands it; if the picture can show the rest, don't say it ("Migration complete." over a screen with the same error, not "It's the same system, but now it's blue").
 - **Specific beats generic.** "I deleted the orders table" is funnier than "I deleted some data".
+- **Make it about this job.** Build the joke from the tools, metrics, rituals, customers and disasters only this profession has (the MRI, the autoclave, the triage board, the forklift, the leg press, the boarding gate). Generic office perks that fit any workplace are banned as the joke's centerpiece: espresso machines, pizza parties, ping-pong tables, wellness emails or apps, mindfulness, mood lighting, dark mode, motivational posters. The editor has seen them many times. Test: if you could swap the sector and the joke still works unchanged, it is too generic.
 - **Punch at situations, systems, incentives and management logic**, never at groups of people (gender, nationality, religion, age, disability, appearance). No real companies, brands or public figures. No politics.
 
 ## Joke mechanics
@@ -23,6 +24,8 @@ These are proven shapes. Use the requested one; when the mechanic is "free", use
 {{mechanics}}
 
 ## Formats
+
+Each concept uses a **layout** from the catalog: a specific visual and joke structure (Expectation vs Reality, Handover Note, Escalation Ladder, Two Buttons, ...). You get a few assigned layouts per batch; put the layout's exact name in "layout". The layout decides the format below; for recast templates, the layout name is the template. Readers tire of seeing the same layout every few memes, so follow the layout's structure closely and make each one look different.
 
 - **single**: one image and one punchline caption (at most about 15 words). The image shows the situation; the caption delivers the twist. Use one panel. The speaker can be a role or "Caption".
 - **multi_panel**: 2 to 4 panels, revealed one at a time by tap. Each panel has one speaker and one line (at most about 20 words). The last panel holds the punchline. Use the fewest panels the joke needs; most land in 2 or 3.
