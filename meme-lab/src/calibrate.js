@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import { generateJSON } from "./llm.js";
 import { criticSchema, explainerSchema, matcherSchema } from "./schemas.js";
-import { readJSON, buildPrompts, blindView, GATE, ratingKey } from "./prompts.js";
+import { readJSON, buildPrompts, blindView, passesGate, ratingKey } from "./prompts.js";
 
 const argv = process.argv.slice(2);
 const ci = argv.indexOf("--config");
@@ -57,6 +57,7 @@ for (const [i, c] of order.entries()) {
     kind: "matcher",
   });
   c.explain = ex.data;
+  c.review = reviews.get(c.id);
   c.match = m.data;
   console.log(`clarity ${ex.data.clarity}, smile ${ex.data.smile ?? "-"}, ${m.data.match}`);
 }
@@ -88,7 +89,7 @@ console.log(`  critic keeps ${keep.length}: your avg ${avg(keep.map((x) => x.use
 const good = rows.filter((x) => x.user >= 4), bad = rows.filter((x) => x.user <= 2);
 console.log(`  your 4-5s the critic kept: ${good.filter((x) => keep.includes(x)).length}/${good.length} | your 1-2s it kept: ${bad.filter((x) => keep.includes(x)).length}/${bad.length}`);
 
-const passed = (c) => c.explain.clarity >= GATE.clarity && c.explain.smile >= GATE.smile;
+const passed = passesGate;
 console.log(`\nExplain test vs you`);
 console.log(`  Pearson clarity vs your rating: ${pearson(order.map((c) => c.explain.clarity), order.map((c) => c.rating)).toFixed(2)}`);
 if (order.every((c) => typeof c.explain.smile === "number")) {

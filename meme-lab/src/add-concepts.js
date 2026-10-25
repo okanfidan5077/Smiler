@@ -9,7 +9,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { generateJSON } from "./llm.js";
 import { criticSchema, explainerSchema, matcherSchema } from "./schemas.js";
-import { readJSON, buildPrompts, blindView, GATE } from "./prompts.js";
+import { readJSON, buildPrompts, blindView, passesGate } from "./prompts.js";
 import { renderReport } from "./report.js";
 
 const [dir, file, ...rest] = process.argv.slice(2);
@@ -42,7 +42,7 @@ for (const c of added) {
   c.review = reviews.get(c.id) ?? null;
   const ex = await generateJSON(judge.explainer, { system: prompts.explainer, user: JSON.stringify(blindView(c), null, 2), schema: explainerSchema, kind: "explainer" });
   c.explain = ex.data;
-  c.passed = c.explain.clarity >= GATE.clarity && c.explain.smile >= GATE.smile;
+  c.passed = passesGate(c);
   const m = await generateJSON(judge.matcher, {
     system: prompts.matcher,
     user: `Intended joke: ${c.premise}\n\nReader's explanation: ${c.explain.explanation}`,

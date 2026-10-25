@@ -54,8 +54,12 @@ export function buildPrompts({ excludeIds = new Set() } = {}) {
 }
 
 // The blind reader is the quality gate. Round 1 calibration: all of the user's 4-5s had
-// clarity 5; all of their 1-2s had 4 or less.
-export const GATE = { clarity: 5, smile: 3 };
+// clarity 5; all of their 1-2s had 4 or less. Re-calibrated on 90 ratings (rounds 1-6): the
+// gate passes 65/70 of the user's 4-5s and 3/10 of the 1-2s; adding the critic's instant >= 4
+// drops one more bad one for 7 good ones. Smile has saturated at 3, so it no longer ranks.
+export const GATE = { clarity: 5, smile: 3, instant: 4 };
+export const passesGate = (c) =>
+  c.explain.clarity >= GATE.clarity && c.explain.smile >= GATE.smile && (c.review?.instant ?? 0) >= GATE.instant;
 
 // What a reader would see: no premise, no mechanic, no self-assessment.
 export const blindView = (c) => ({

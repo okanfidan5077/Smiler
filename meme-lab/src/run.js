@@ -9,7 +9,7 @@ import path from "node:path";
 import { generateJSON } from "./llm.js";
 import { writerSchema, criticSchema, explainerSchema, matcherSchema } from "./schemas.js";
 import { renderReport } from "./report.js";
-import { root, readJSON, buildPrompts, blindView, GATE } from "./prompts.js";
+import { root, readJSON, buildPrompts, blindView, passesGate } from "./prompts.js";
 
 // ---------- args ----------
 const args = Object.fromEntries(
@@ -158,13 +158,13 @@ async function runSeed(config, seed, seedIdx, cost, keptMechanics) {
     });
     track("explainer", ex.usage);
     c.explain = ex.data;
-    c.passed = c.explain.clarity >= GATE.clarity && c.explain.smile >= GATE.smile;
+    c.passed = passesGate(c);
   }
 
   // Selection: the best proven concept and the best experiment first, then the rest by score.
   // A mechanic may fill at most MECHANIC_CAP picks per run and a layout one, so one working shape
   // can't take over the feed (round 3: 7 of 12 picks were the same "cosmetic fix" joke).
-  const score = (c) => [c.explain.smile, c.review.visual_payoff, c.review.overall];
+  const score = (c) => [c.review.instant + c.review.tight + c.review.visual_payoff, c.review.overall, c.explain.smile];
   const byScore = (a, b) => {
     const [x, y] = [score(a), score(b)];
     return y[0] - x[0] || y[1] - x[1] || y[2] - x[2];
