@@ -22,7 +22,7 @@ export async function loadCatalog() {
     db.from("mechanics").select("name, shape, example").eq("active", true),
     db.from("layouts").select("name, format, layout").eq("active", true),
     db.from("problems").select("sector_id, description"),
-    db.from("layout_scores").select("name, score"),
+    db.from("layout_scores").select("name, score, up, down"),
   ]);
   const sectorRows = must(sectors, "sectors");
   const sectorName = new Map(sectorRows.map((s) => [s.id, s.name]));
@@ -36,7 +36,8 @@ export async function loadCatalog() {
       problemBank,
       brands: labJSON("data/brands.json"),
     },
-    layoutScore: new Map(must(scores, "layout_scores").map((s) => [s.name, Number(s.score)])),
+    // score drives which proven layouts get dealt; rated (any up or down) separates proven from untried.
+    layoutStats: new Map(must(scores, "layout_scores").map((s) => [s.name, { score: Number(s.score), rated: Number(s.up) + Number(s.down) > 0 }])),
   };
 }
 

@@ -51,7 +51,7 @@ These memes show the tone and the quality bar. They are references, not template
 
 You will get a sector, sometimes a specific problem, and a mechanic (or "free"). Write the requested number of concepts.
 
-- **Half proven, half experiments.** Write about half the concepts in shapes the editor has already liked (see the liked list), done fresh. Write the other half as experiments, and set `explore: true` on them: a mechanic or format the liked list rarely shows, a recast template, a shape you invent (name it in "mechanic"), or an unusual angle on the sector. Experiments are how the series finds new hits, so make them real attempts, not filler. Within a batch, use each mechanic at most twice.
+- **Mostly new, some proven.** The editor wants to discover new formats, not see liked ones again. Use the proven layout for only a few concepts. Spend most concepts on the untried layouts and on layouts you invent yourself, and set `explore: true` on those. An invented layout is a reusable structure (like "Specialist Vision: what a normal person sees vs what this profession sees"), not just a new joke; name it "New: <name>" and describe it in "layout_description". Inventions are how the series finds new hits, so make them real attempts, not filler. Within a batch, use each mechanic at most twice.
 - Explore genuinely different angles: different problems within the sector, different mechanics and formats, different characters.
 - Don't mention specific years or dates; the memes should stay evergreen.
 - Recast templates land well with readers; use each template at most once per batch.

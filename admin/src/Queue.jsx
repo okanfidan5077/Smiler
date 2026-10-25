@@ -147,8 +147,11 @@ export default function Queue() {
       <article className="card">
         <div className="meta">
           <span>{meme.sector}</span> · <strong>{meme.layout || meme.format}</strong> · <span>{meme.mechanic}</span>
-          {meme.explore && <span className="badge">experiment</span>}
+          {/^new:/i.test(meme.layout) ? <span className="badge new">new layout</span> : meme.explore && <span className="badge">experiment</span>}
         </div>
+        {/^new:/i.test(meme.layout) && meme.layout_description && (
+          <div className="layout-desc muted">Invented layout: {meme.layout_description} Approving adds it to the catalog.</div>
+        )}
         {meme.panels.map((p) => (
           <section className="panel" key={p.id}>
             <div className="scene">{tr && p.scene_tr ? p.scene_tr : p.scene}</div>

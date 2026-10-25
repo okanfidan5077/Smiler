@@ -32,10 +32,15 @@ export async function runText({ seeds = 6, n = 10, keep = 2, rng = Date.now() % 
     "create run",
   );
   try {
-    const { catalog, layoutScore } = await loadCatalog();
+    const { catalog, layoutStats } = await loadCatalog();
     const prompts = buildPrompts({ mechanics: catalog.mechanics, feedback: await loadPromptFeedback() });
-    // Unscored layouts count as 0.5, so new ones still get dealt while proven ones come up more.
-    const seedList = makeSeeds(catalog, { count: seeds, rng, layoutWeight: (name) => layoutScore.get(name) ?? 0.5 });
+    // Per seed: one proven layout (by approval score) and two untried ones; the writer also invents.
+    const seedList = makeSeeds(catalog, {
+      count: seeds,
+      rng,
+      layoutWeight: (name) => layoutStats.get(name)?.score ?? 0.5,
+      layoutRated: (name) => layoutStats.get(name)?.rated ?? false,
+    });
     must(await db.from("generation_runs").update({ seeds: seedList }).eq("id", run.id), "store seeds");
 
     const result = await runConfig(config, seedList, { catalog, prompts, perSeed: n, keepCount: keep, log });
@@ -60,6 +65,7 @@ export async function runText({ seeds = 6, n = 10, keep = 2, rng = Date.now() % 
         status: c.kept ? "draft" : "candidate",
         format: c.format ?? "single",
         layout: c.layout ?? "",
+        layout_description: c.layout_description ?? "",
         template: c.template ?? "",
         sector: c.sector ?? c.seed.sector,
         problem: c.problem ?? "",

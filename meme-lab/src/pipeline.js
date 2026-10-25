@@ -29,9 +29,11 @@ function mulberry32(a) {
   };
 }
 
-// layoutWeight(name) > 0 biases which layouts get dealt (weighted shuffle, Efraimidis-Spirakis);
-// a constant weight is a plain shuffle. The service passes scores learned from approvals.
-export function makeSeeds(catalog, { count = 5, rng = Date.now() % 100000, freeShare = 0.3, layoutsPerSeed = 3, sector, mechanic, layoutWeight = () => 1 } = {}) {
+// Each seed gets `provenPerSeed` proven layouts (rated before, dealt by score: layoutWeight is a
+// weighted shuffle, Efraimidis-Spirakis) and the rest untried ones (never rated, plain shuffle).
+// The user asked for new formats over liked ones, so most slots go to untried layouts, and the
+// writer must also invent new ones. Without ratings (the CLI), every layout counts as both.
+export function makeSeeds(catalog, { count = 5, rng = Date.now() % 100000, freeShare = 0.3, layoutsPerSeed = 3, provenPerSeed = 1, sector, mechanic, layoutWeight = () => 1, layoutRated = () => false } = {}) {
   const rand = mulberry32(rng);
   const pick = (list) => list[Math.floor(rand() * list.length)];
   const shuffle = (list) => {
@@ -42,18 +44,26 @@ export function makeSeeds(catalog, { count = 5, rng = Date.now() % 100000, freeS
     }
     return a;
   };
-  // Layouts are dealt from a shuffled catalog so one run covers as many as possible (user: "as many
-  // formats as possible"); problems come from the sector's bank so jokes stay specific to the job.
-  const deck = catalog.formats
+  // Layouts are dealt from decks so one run covers as many as possible (user: "as many formats as
+  // possible"); problems come from the sector's bank so jokes stay specific to the job.
+  const rated = catalog.formats.filter((f) => layoutRated(f.name));
+  const untried = catalog.formats.filter((f) => !layoutRated(f.name));
+  const provenDeck = (rated.length ? rated : catalog.formats)
     .map((f) => ({ f, key: Math.pow(rand(), 1 / Math.max(layoutWeight(f.name), 1e-6)) }))
     .sort((a, b) => b.key - a.key)
-    .map((x) => x.f);
+    .map((x) => x.f.name);
+  const untriedDeck = shuffle(untried.length ? untried : catalog.formats).map((f) => f.name);
+  const untriedPerSeed = layoutsPerSeed - provenPerSeed;
   return Array.from({ length: count }, (_, i) => {
     const s = sector ?? pick(catalog.sectors);
+    const proven = Array.from({ length: provenPerSeed }, (_, k) => provenDeck[(i * provenPerSeed + k) % provenDeck.length]);
+    const fresh = Array.from({ length: untriedPerSeed }, (_, k) => untriedDeck[(i * untriedPerSeed + k) % untriedDeck.length]).filter((n) => !proven.includes(n));
     return {
       sector: s,
       mechanic: mechanic ?? (rand() < freeShare ? "free" : pick(catalog.mechanics).name),
-      layouts: Array.from({ length: layoutsPerSeed }, (_, k) => deck[(i * layoutsPerSeed + k) % deck.length].name),
+      proven,
+      untried: fresh,
+      layouts: [...proven, ...fresh],
       problems: shuffle(catalog.problemBank[s] ?? []).slice(0, 4),
     };
   });
@@ -81,7 +91,10 @@ function makeValidator(catalog) {
       if (layout.format === "recast_template") c.template = layout.name;
     } else if (!/^new:/i.test(String(c.layout ?? "").trim())) {
       problems.push(`unknown layout "${c.layout}" (use a catalog name or "New: ...")`);
+    } else if (String(c.layout_description ?? "").trim().length < 15) {
+      problems.push("invented layout without a layout_description");
     }
+    if (layout) c.layout_description = "";
     const template = String(c.template ?? "").trim();
     if (c.format === "recast_template") {
       if (JUNK.has(template.toLowerCase()) || mechanicNames.has(template.toLowerCase())) problems.push("recast_template without a real template name");
@@ -133,9 +146,10 @@ export async function runConfig(config, seeds, { catalog, prompts, perSeed = 8, 
         ? `Real problems in this job (use these, or others just as specific):\n${seed.problems.map((p) => `- ${p}`).join("\n")}`
         : "Problems: choose specific, real problems from this job.",
       `Mechanic: ${seed.mechanic}`,
-      `Assigned layouts (spread the proven half across these):\n${seed.layouts.map(layoutText).join("\n")}`,
-      `Experiments may use any other catalog layout, or invent one named "New: <name>". Catalog: ${catalog.formats.map((f) => f.name).join(", ")}.`,
-      `Write ${perSeed} concepts.`,
+      `Proven layout (the editor already likes it; use it for at most ${Math.max(1, Math.round(perSeed * 0.3))} concepts):\n${(seed.proven ?? seed.layouts.slice(0, 1)).map(layoutText).join("\n")}`,
+      `Untried layouts (never shown to the editor yet; give each a real attempt):\n${(seed.untried ?? seed.layouts.slice(1)).map(layoutText).join("\n")}`,
+      `Invent: at least ${Math.max(2, Math.round(perSeed * 0.3))} concepts must use a layout that is not in the catalog. Name it "New: <short name>" in "layout" and describe its structure in one sentence in "layout_description" (what each panel or the picture shows), so it can be reused for other jobs. Do not rename an existing layout. Catalog, for reference: ${catalog.formats.map((f) => f.name).join(", ")}.`,
+      `Mark untried and invented concepts explore: true. Write ${perSeed} concepts.`,
     ].join("\n\n");
     const w = await generateJSON(config.writer, { system: prompts.writer, user: writerUser, schema: writerSchema, kind: "writer" });
     track("writer", w.usage);
@@ -182,8 +196,11 @@ export async function runConfig(config, seeds, { catalog, prompts, perSeed = 8, 
       keptMechanics.set(mech(c), (keptMechanics.get(mech(c)) ?? 0) + 1);
       keptMechanics.set(lay(c), 1); // each layout at most once per run
     };
-    take(passing.find((c) => !c.explore && open(c)));
-    take(passing.find((c) => c.explore && open(c)));
+    // Newness first (user: "shouldn't always generate liked formats"): an invented layout if one
+    // passes, else an untried one; then the best remaining concept, proven or not.
+    const invented = (c) => /^new:/i.test(String(c.layout));
+    const untriedNames = new Set((seed.untried ?? []).map((n) => n.toLowerCase()));
+    take(passing.find((c) => invented(c) && open(c)) ?? passing.find((c) => untriedNames.has(String(c.layout).toLowerCase()) && open(c)));
     for (const c of passing) take(c);
 
     // The matcher is informational: it once said "no" on a meme the user rated 5.
