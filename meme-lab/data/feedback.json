@@ -1455,6 +1455,148 @@
       ],
       "reasons": [],
       "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-1-7",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Distracted Boyfriend",
+      "panels": [
+        {
+          "speaker": "The boyfriend",
+          "line": "City Council",
+          "scene": "A council member in a suit looking back with excitement."
+        },
+        {
+          "speaker": "The woman in red",
+          "line": "A 200-page 'Synergy Roadmap' from a consultant",
+          "scene": "A glossy, colorful binder with a gold embossed cover."
+        },
+        {
+          "speaker": "The girlfriend",
+          "line": "Fixing the main water pipe that burst three weeks ago",
+          "scene": "A construction worker standing next to a massive geyser of water in the middle of the street."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-1-8",
+      "rating": 4,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The city's innovative solution to noisy public hearings.",
+          "scene": "A proud mayor standing next to a brand new, sound-proof glass wall that has been installed *around* the podium. On the other side of the glass, a citizen is screaming and shaking their fists in total silence."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-2-3",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Iceberg",
+      "panels": [
+        {
+          "speaker": "Tip of Iceberg",
+          "line": "Published Paper",
+          "scene": "A small piece of ice above water with a clean academic journal cover on it."
+        },
+        {
+          "speaker": "Underwater mass",
+          "line": "Begging former classmates for free labor",
+          "scene": "The massive base of the iceberg underwater, showing silhouettes of desperate emails and pleading faces."
+        }
+      ],
+      "reasons": [],
+      "note": "new format, iceberg"
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-2-6",
+      "rating": 4,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Efficiency increase complete: We now have a weekly committee to optimize our other committees.",
+          "scene": "A boardroom where people are staring at a giant flowchart that just loops back to the start."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-3-5",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Pilot, Day 1",
+          "line": "I can't wait to command a Boeing 787 and cross the Atlantic!",
+          "scene": "A beaming pilot in a crisp uniform, standing in front of a massive jet under a blue sky."
+        },
+        {
+          "speaker": "Pilot, Day 400",
+          "line": "I've spent three hours hunting for the third carbon copy of the load sheet.",
+          "scene": "The same pilot, tie loose, staring blankly at a desk covered in yellow and pink slips of paper. The plane is visible through the window, idling."
+        }
+      ],
+      "reasons": [
+        "seen it"
+      ],
+      "note": "similar day 1 vs"
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-5-7",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Two Buttons",
+      "panels": [
+        {
+          "speaker": "Foreman",
+          "line": "...",
+          "scene": "A sweaty foreman in a hardhat staring intensely at two large red buttons."
+        },
+        {
+          "speaker": "Button 1",
+          "line": "Read the paper prints and fix the wall",
+          "scene": "The first button label."
+        },
+        {
+          "speaker": "Button 2",
+          "line": "Attend a 3-hour webinar on 'Digital Workflow Synergy'",
+          "scene": "The second button label. The foreman's finger is hovering decisively over this one."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-6-5",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Training Video",
+          "line": "Automated dispensing eliminates human error and prevents costly inventory loss.",
+          "scene": "A clean animation of a pill dropping perfectly into a bottle."
+        },
+        {
+          "speaker": "Pharmacist",
+          "line": "It's jammed. And it's the $500-a-pill kind.",
+          "scene": "The pharmacist is staring in horror at a machine that has spat out a mountain of expensive tablets all over the floor."
+        }
+      ],
+      "reasons": [],
+      "note": ""
     }
   ],
   "rejected": [
@@ -1685,6 +1827,67 @@
       ],
       "reasons": [
         "weak punchline"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-4-10",
+      "rating": 2,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Visitor",
+          "line": "Look at them! Such passionate academic debate!",
+          "scene": "POV of a visitor. In front of them, a professor has physically cornered another professor against a wall, pleading with an expression of pure desperation while holding a manuscript."
+        }
+      ],
+      "reasons": [
+        "weak punchline"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-5-1",
+      "rating": 2,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Foreman",
+          "line": "Finally! The industrial laser level has arrived. No more guessing on the foundation!",
+          "scene": "The foreman and two workers stand around a large, pristine wooden crate with 'FRAGILE' stamps on it."
+        },
+        {
+          "speaker": "Worker",
+          "line": "Let's get this beast open.",
+          "scene": "A worker pries the lid off with a crowbar; the team looks in with wide, excited eyes."
+        },
+        {
+          "speaker": "Foreman",
+          "line": "Great. Now who has a spare power cable?",
+          "scene": "Close-up of a stunning, futuristic device sitting in foam, but the slot where the battery or cable goes is conspicuously empty."
+        }
+      ],
+      "reasons": [
+        "weak punchline"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T19:35:51.206Z/gemma-6-7",
+      "rating": 2,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "★★★★★ \"So peaceful. I love how the staff doesn't even talk!\"",
+          "scene": "A customer smiling at their phone in the lobby; behind them, over the counter, the pharmacist is frozen in a thousand-yard stare, surrounded by 50 ringing phones and a mountain of pills."
+        }
+      ],
+      "reasons": [
+        "not funny"
       ],
       "note": ""
     }

@@ -70,7 +70,9 @@ const seeds = Array.from({ length: seedCount }, (_, i) => {
 
 // ---------- validation ----------
 // Cheap structural checks before the critic: drafts that fail are marked invalid and skip review.
-const TEXT_IN_IMAGE = /speech bubble|thought bubble|\b(reads|says|saying|labeled|labelled|titled|that reads)\s*[:'"‘“]|\bone line is visible\b/i;
+// The critic missed brands twice (a designer chair, an airliner model), so they are checked in code.
+const BRANDS = new RegExp(`\\b(${readJSON("data/brands.json").map((b) => b.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`); // case-sensitive: "UPS" is a brand, "push-ups" is not
+const TEXT_IN_IMAGE =/speech bubble|thought bubble|\b(reads|says|saying|labeled|labelled|titled|that reads)\s*[:'"‘“]|\bone line is visible\b/i;
 const JUNK = new Set(["", "n/a", "na", "none", "null", "undefined", "-"]);
 const mechanicNames = new Set(mechanics.map((m) => m.name.toLowerCase()));
 
@@ -100,6 +102,8 @@ function validate(c) {
     }
     // Images never carry text; image models garble it (user: speech bubbles are hard to generate).
     if (TEXT_IN_IMAGE.test(String(p.scene ?? ""))) problems.push(`panel ${i + 1} scene needs readable text in the image`);
+    const brand = BRANDS.exec(`${p.speaker} ${p.line} ${p.scene}`);
+    if (brand) problems.push(`panel ${i + 1} names a real brand (${brand[1]})`);
   });
   if (problems.length) c.invalid = problems.join("; ");
   return c;
