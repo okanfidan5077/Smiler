@@ -1,0 +1,7 @@
+{
+  "description": "Claude Opus 5.5 writes (won the round-6 blind test 4.08 vs 3.50); local Gemma judges for free. price = [USD per 1M input tokens, USD per 1M output tokens].",
+  "writer":    { "provider": "anthropic", "model": "claude-opus-5-5", "effort": "high", "price": [4, 20] },
+  "critic":    { "provider": "ollama", "model": "gemma4:31b", "temperature": 0.2, "think": false },
+  "explainer": { "provider": "ollama", "model": "gemma4:31b", "temperature": 0.3, "think": false },
+  "matcher":   { "provider": "ollama", "model": "gemma4:31b", "temperature": 0.0, "think": false }
+}

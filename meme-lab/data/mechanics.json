@@ -7,5 +7,6 @@
   { "name": "Impending Doom", "shape": "Disaster sneaks up on something calm and unaware.", "example": "The infrastructure team creeps up on the sleeping website, holding an update like a club." },
   { "name": "Endless Cycle", "shape": "The problem that was removed walks right back in.", "example": "Fraud is thrown out of the company and is back at the bar in the next frame." },
   { "name": "Misdirected Effort", "shape": "Heroic effort aimed at the wrong place achieves nothing.", "example": "The security team shields one side while the cyber attacks hit from the other." },
+  { "name": "Problem Relocation", "shape": "A shady quick fix doesn't solve the problem, it just moves it onto someone else, and the fixer reports success.", "example": "\"The light drips oil on patients.\" \"Fixed it.\" \"How?\" \"I moved the chair.\" (the drip now lands on the dentist's head)" },
   { "name": "Cosmetic Cure", "shape": "A real, painful problem gets a decorative fix, proudly presented while the problem continues in plain view.", "example": "\"We couldn't afford to repair the MRI, but the lobby got a 4K waterfall wall.\" (broken MRI under a tarp behind the screen)" }
 ]

@@ -1075,6 +1075,386 @@
         "seen it"
       ],
       "note": "similar wasted money format"
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-2-7",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Distracted Boyfriend",
+      "panels": [
+        {
+          "speaker": "The boyfriend",
+          "line": "Warehouse Owner",
+          "scene": "A man in a suit looking back with desire."
+        },
+        {
+          "speaker": "The woman in red",
+          "line": "Autonomous Sorting Drone",
+          "scene": "A sleek, futuristic drone hovering in the air."
+        },
+        {
+          "speaker": "The girlfriend",
+          "line": "Giant hole in the loading dock",
+          "scene": "A woman representing a crumbling piece of concrete with rebar sticking out."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-3-3",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Expanding Brain",
+      "panels": [
+        {
+          "speaker": "Level 1",
+          "line": "One signature for approval",
+          "scene": "A small brain. A simple paper on a desk."
+        },
+        {
+          "speaker": "Level 2",
+          "line": "Three signatures to ensure accuracy",
+          "scene": "A glowing brain. The paper now has three lines at the bottom."
+        },
+        {
+          "speaker": "Level 3",
+          "line": "Seven signatures to maximize efficiency",
+          "scene": "A vibrating, cosmic brain. A massive stack of papers with dozens of stamps."
+        },
+        {
+          "speaker": "Level 4",
+          "line": "A dedicated committee to approve the signature request",
+          "scene": "An exploding galaxy brain. A boardroom full of people staring at one single piece of paper."
+        }
+      ],
+      "reasons": [],
+      "note": "expanding brain format, first time I saw and nice!"
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-3-7",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "No cloud storage. No exceptions. Everything must be local.",
+          "scene": "A stern manager pointing to a signed memo on a wall."
+        },
+        {
+          "speaker": "Clerk",
+          "line": "But we need to share the zoning files between offices across town!",
+          "scene": "A confused clerk holding a USB stick."
+        },
+        {
+          "speaker": "Manager",
+          "line": "The solution is simple. Just use the courier.",
+          "scene": "The manager smiling calmly."
+        },
+        {
+          "speaker": "Caption",
+          "line": "Digital transformation complete: The USB stick is now delivered via registered mail with a physical signature required.",
+          "scene": "A courier in a uniform handing a small envelope containing a thumb drive to another clerk, who is stamping a delivery log."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-4-2",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Officer",
+          "line": "I can't wait to get out there and really clean up these streets!",
+          "scene": "Day 1. A rookie officer in a crisp, perfectly pressed uniform, standing tall and smiling with wide eyes."
+        },
+        {
+          "speaker": "Officer",
+          "line": "If you see a crime in progress, just keep driving. The paperwork isn't worth the overtime lecture.",
+          "scene": "Day 400. The same officer, tie loosened, hair messy, looking exhausted and staring blankly at a newcomer."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-5-3",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Visitor",
+          "line": "I love the rustic, weathered look of the elephant paddock.",
+          "scene": "A visitor taking a photo of a wooden fence. The wood looks old and grey."
+        },
+        {
+          "speaker": "Zookeeper",
+          "line": "The elephant has chewed through three support beams since Tuesday.",
+          "scene": "Close up of the same fence from the keeper's POV, showing massive tooth marks and a beam leaning at a 45-degree angle."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-5-9",
+      "rating": 4,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "The new staff guidelines posted by the primate enclosure.",
+          "scene": "A professional-looking notice board with a formal header. The paper is mostly shredded, but one line is visible: 'ALL BANANAS MUST BE DELIVERED BY 8 AM OR THE LOCKS GET BENT'. A monkey is sitting on top of the board, looking down at the keepers like a boss."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-6-9",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Manager",
+          "line": "The queue is 200 people deep. Why is no one answering?",
+          "scene": "A manager looking at a screen with a massive red number showing the waitlist."
+        },
+        {
+          "speaker": "Supervisor",
+          "line": "I've pulled the entire team off the phones for a mandatory seminar on Time Management.",
+          "scene": "The supervisor pointing toward a conference room where all agents are sitting in chairs, looking bored."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-1-1",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Dental Assistant",
+          "line": "The overhead light keeps dripping oil on the patients.",
+          "scene": "A patient lies in the dental chair; a single drop of oil falls from the big overhead lamp onto their forehead."
+        },
+        {
+          "speaker": "Clinic Manager",
+          "line": "Fixed it.",
+          "scene": "The manager wipes his hands, looking pleased, next to the chair."
+        },
+        {
+          "speaker": "Dental Assistant",
+          "line": "How?",
+          "scene": "The assistant looks around the room, confused."
+        },
+        {
+          "speaker": "Clinic Manager",
+          "line": "I moved the chair.",
+          "scene": "The chair is now one step to the left. The oil drop lands squarely on the bald head of the dentist, who stands frozen mid-procedure."
+        }
+      ],
+      "reasons": [],
+      "note": "nice one. Solfing the problem by shady temporary fix. Could be nice format to keep in mind and apply yo different scenarios"
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-1-2",
+      "rating": 5,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "★★★★★ \"Felt nothing. Would come back.\"",
+          "scene": "At the front desk, a smiling receptionist holds out a tablet and gently guides the finger of a patient whose whole face is numb and drooping, a little drool on the chin, to tap the fifth star."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-2-1",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Clown Makeup",
+      "panels": [
+        {
+          "speaker": "Step 1",
+          "line": "The new software will make picking faster.",
+          "scene": "A warehouse picker in a hi-vis vest, hopeful, holding a handheld scanner, applying the first dab of white face paint."
+        },
+        {
+          "speaker": "Step 2",
+          "line": "Four more clicks per item, but it's learning.",
+          "scene": "Same picker, half the face painted white, tapping the scanner again and again."
+        },
+        {
+          "speaker": "Step 3",
+          "line": "Pick rate down 30%. That's just the learning curve.",
+          "scene": "Red clown nose on, colorful wig going on, pallets piling up behind."
+        },
+        {
+          "speaker": "Step 4",
+          "line": "Can't wait for next year's upgrade!",
+          "scene": "Full clown makeup and wig, beaming, hugging the scanner, surrounded by unpicked boxes."
+        }
+      ],
+      "reasons": [],
+      "note": "clown make up format is also nice! Keep all those formats in memory we can save formats and generate based on those"
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-3-1",
+      "rating": 5,
+      "format": "recast_template",
+      "template": "Expanding Brain",
+      "panels": [
+        {
+          "speaker": "Level 1",
+          "line": "Paper forms",
+          "scene": "A small, dim brain next to a clerk holding one paper form."
+        },
+        {
+          "speaker": "Level 2",
+          "line": "Scanning the paper forms",
+          "scene": "A brighter brain; the clerk feeds the form into an old scanner."
+        },
+        {
+          "speaker": "Level 3",
+          "line": "Printing the scans for a wet signature",
+          "scene": "A glowing brain; the printer spits out the scan and the clerk signs it with a fountain pen."
+        },
+        {
+          "speaker": "Level 4",
+          "line": "Faxing the printout to the office next door",
+          "scene": "A brain radiating cosmic light; the clerk proudly faxes the page while the person it's meant for waves at him from the next desk, one meter away."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-3-2",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Clerk 1",
+          "line": "Approved. Take it to Planning.",
+          "scene": "A young citizen hands a single clean form to a clerk, who stamps it."
+        },
+        {
+          "speaker": "Clerk 2",
+          "line": "Approved. Take it to the Deputy.",
+          "scene": "The citizen, now with grey at the temples, at a second desk; the form is covered in stamps."
+        },
+        {
+          "speaker": "Clerk 1",
+          "line": "This form expired yesterday. Please start again.",
+          "scene": "Back at the first desk. The citizen is now very old with a long white beard, holding a form so covered in stamps it is solid ink. The same clerk slides a fresh blank form across the desk."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-4-1",
+      "rating": 5,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Officer, day 1",
+          "line": "I joined to catch criminals!",
+          "scene": "A fresh, eager officer in a crisp uniform, fist raised, sunlight behind him."
+        },
+        {
+          "speaker": "Same officer, day 400",
+          "line": "Rookie, the arrest is the short part.",
+          "scene": "The same officer, hollow-eyed, behind a desk buried under a mountain of forms. Beside him, the handcuffed suspect has fallen asleep in the chair waiting."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-4-2",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Monkey Looks Away",
+      "panels": [
+        {
+          "speaker": "The question",
+          "line": "\"Be proactive.\" \"Sure. Who approves the overtime?\"",
+          "scene": "An officer asks the question in the chief's office doorway."
+        },
+        {
+          "speaker": "The puppet looking away",
+          "line": "Police Chief",
+          "scene": "A puppet-like police chief slowly glances sideways, avoiding eye contact, eyes wide."
+        }
+      ],
+      "reasons": [],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-6-1",
+      "rating": 4,
+      "format": "recast_template",
+      "template": "Distracted Boyfriend",
+      "panels": [
+        {
+          "speaker": "The boyfriend",
+          "line": "Call center management",
+          "scene": "A man in a suit with a headset clipped to his belt turns to look back with desire."
+        },
+        {
+          "speaker": "The woman in red",
+          "line": "An AI chatbot that says \"I understand your frustration\"",
+          "scene": "A sleek, glowing robot walks past, smiling."
+        },
+        {
+          "speaker": "The girlfriend",
+          "line": "Fixing the system that crashes at two tabs",
+          "scene": "An agent with a headset glares in disbelief, a frozen monitor in her arms."
+        }
+      ],
+      "reasons": [],
+      "note": "women in red format"
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-6-2",
+      "rating": 4,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "QA Reviewer",
+          "line": "Great call. Solved in two minutes.",
+          "scene": "A quality reviewer with a clipboard leans over an agent's desk, nodding."
+        },
+        {
+          "speaker": "QA Reviewer",
+          "line": "But you said the customer's name twice, not three times. Minus 20 points.",
+          "scene": "The reviewer marks a big red cross on the scorecard."
+        },
+        {
+          "speaker": "Agent",
+          "line": "...",
+          "scene": "Close-up of the agent's blank, thousand-yard stare; the headset slowly slides off one ear."
+        }
+      ],
+      "reasons": [],
+      "note": ""
     }
   ],
   "rejected": [
@@ -1188,6 +1568,123 @@
       ],
       "reasons": [
         "unclear"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-1-9",
+      "rating": 2,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Entering the 14th cycle of 'Almost started the filling'.",
+          "scene": "POV from the dentist. We see the patient's open mouth, but then a speech bubble pops up: 'Actually, I forgot to mention...' and the jaw is physically snapping shut like a trap."
+        }
+      ],
+      "reasons": [
+        "weak punchline"
+      ],
+      "note": "konuşma balonu image generation'da bizi zorlar"
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-4-3",
+      "rating": 2,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Job Ad",
+          "line": "Join our force! We empower officers to be proactive and take initiative in the field!",
+          "scene": "A glossy, high-contrast photo of a police car speeding toward a sunset with sirens flashing."
+        },
+        {
+          "speaker": "Supervisor",
+          "line": "I told you to be proactive, but why did this arrest put us 15 minutes over the overtime budget?",
+          "scene": "A dim office. A supervisor is smiling thinly and proudly while pointing at a spreadsheet on a monitor; the officer stands opposite him, looking defeated."
+        }
+      ],
+      "reasons": [
+        "seen it",
+        "weak punchline",
+        "unclear"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/gemma-6-3",
+      "rating": 2,
+      "format": "multi_panel",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Agent",
+          "line": "I can't believe I lost points because I only said their name twice during a crisis.",
+          "scene": "The agent staring in disbelief at a quality score report."
+        },
+        {
+          "speaker": "Agent",
+          "line": "This is insane! Who cares about the name when the customer's house is flooding?!",
+          "scene": "The agent gesturing wildly, face red with anger."
+        },
+        {
+          "speaker": "Agent",
+          "line": "Maybe if I just weave it into a sentence naturally, they won't notice.",
+          "scene": "The agent rubbing their temples, trying to plan a script."
+        },
+        {
+          "speaker": "Agent",
+          "line": "Hello Mr. Smith. Thank you for calling Mr. Smith. How can I help you, Mr. Smith?",
+          "scene": "The agent with dead eyes and a robotic smile, speaking into the headset while staring at a blank wall."
+        }
+      ],
+      "reasons": [
+        "weak punchline"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-2-2",
+      "rating": 2,
+      "format": "recast_template",
+      "template": "Is This a Pigeon",
+      "panels": [
+        {
+          "speaker": "The man",
+          "line": "Inventory system",
+          "scene": "A cartoon man in glasses, with a computer monitor for a head, gestures confidently."
+        },
+        {
+          "speaker": "The butterfly",
+          "line": "An empty shelf",
+          "scene": "He points at a bare warehouse shelf with a single cobweb on it."
+        },
+        {
+          "speaker": "Caption",
+          "line": "Is this 40 units in stock?",
+          "scene": "Wide shot of the full composition: the man pointing, the empty shelf, a tired picker behind him with a scanner."
+        }
+      ],
+      "reasons": [
+        "unclear"
+      ],
+      "note": ""
+    },
+    {
+      "id": "2026-10-25T18:31:43.492Z/claude-5-2",
+      "rating": 2,
+      "format": "single",
+      "template": "",
+      "panels": [
+        {
+          "speaker": "Caption",
+          "line": "Handover: goat ate a visitor's map. Four-page incident report is on the clipboard.",
+          "scene": "The next keeper arrives at the petting zoo. The clipboard hangs empty on its hook; the goat is chewing the last page, staring straight at the keeper."
+        }
+      ],
+      "reasons": [
+        "weak punchline"
       ],
       "note": ""
     }

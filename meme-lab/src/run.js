@@ -70,6 +70,7 @@ const seeds = Array.from({ length: seedCount }, (_, i) => {
 
 // ---------- validation ----------
 // Cheap structural checks before the critic: drafts that fail are marked invalid and skip review.
+const TEXT_IN_IMAGE = /speech bubble|thought bubble|\b(reads|says|saying|labeled|labelled|titled|that reads)\s*[:'"‘“]|\bone line is visible\b/i;
 const JUNK = new Set(["", "n/a", "na", "none", "null", "undefined", "-"]);
 const mechanicNames = new Set(mechanics.map((m) => m.name.toLowerCase()));
 
@@ -97,6 +98,8 @@ function validate(c) {
     for (const field of ["speaker", "line", "scene"]) {
       if (JUNK.has(String(p[field] ?? "").trim().toLowerCase())) problems.push(`panel ${i + 1} has an empty ${field}`);
     }
+    // Images never carry text; image models garble it (user: speech bubbles are hard to generate).
+    if (TEXT_IN_IMAGE.test(String(p.scene ?? ""))) problems.push(`panel ${i + 1} scene needs readable text in the image`);
   });
   if (problems.length) c.invalid = problems.join("; ");
   return c;
