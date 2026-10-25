@@ -62,7 +62,11 @@ check(await db.from("sectors").upsert(readLab("data/sectors.json").map((name) =>
 check(await db.from("mechanics").upsert(readLab("data/mechanics.json").map((m) => ({ name: m.name, shape: m.shape, example: m.example ?? "" })), { onConflict: "name" }), "mechanics");
 check(
   await db.from("layouts").upsert(
-    formats.map((f) => ({ name: f.name, format: f.format, layout: f.layout, prior_up: priors.get(f.name)?.up ?? 0, prior_down: priors.get(f.name)?.down ?? 0 })),
+    // Without rating files, existing priors are left alone (re-seeding the catalog mustn't wipe scores).
+    formats.map((f) => ({
+      name: f.name, format: f.format, layout: f.layout,
+      ...(process.argv.length > 2 ? { prior_up: priors.get(f.name)?.up ?? 0, prior_down: priors.get(f.name)?.down ?? 0 } : {}),
+    })),
     { onConflict: "name" },
   ),
   "layouts",
