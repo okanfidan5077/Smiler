@@ -34,10 +34,11 @@ function feedbackText(feedback, excludeIds) {
 }
 
 // excludeIds keeps rated concepts out of the feedback when the critic is calibrated on them.
-export function buildPrompts({ excludeIds = new Set() } = {}) {
-  const mechanics = readJSON("data/mechanics.json");
+// The service passes mechanics and feedback from Supabase; the CLI reads them from data/.
+export function buildPrompts({ excludeIds = new Set(), mechanics, feedback } = {}) {
+  mechanics ??= readJSON("data/mechanics.json");
+  feedback ??= readJSON("data/feedback.json");
   const examples = readJSON("data/examples.json");
-  const feedback = readJSON("data/feedback.json");
   const vars = {
     mechanics: mechanics.map((m) => `- **${m.name}**: ${m.shape} Example: ${m.example}`).join("\n"),
     examples: examples

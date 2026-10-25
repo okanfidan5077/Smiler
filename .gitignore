@@ -2,3 +2,5 @@ node_modules/
 meme-lab/results/
 .env
 .env.*
+!.env.example
+dist/

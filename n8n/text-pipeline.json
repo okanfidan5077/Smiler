@@ -1,0 +1,42 @@
+{
+  "name": "Smiler: daily text run",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "triggerAtHour": 3 }] } },
+      "name": "Every day at 03:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {},
+      "name": "Run now (manual)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8787/runs/text",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [{ "name": "X-Smiler", "value": "1" }] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"seeds\": 6, \"n\": 10, \"keep\": 2 }",
+        "options": { "timeout": 1800000 }
+      },
+      "name": "Text pipeline (Gemma, 6 seeds)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [280, 100],
+      "notes": "Calls the local Smiler service (server/, npm start). Writes 12 drafts to Supabase for the admin page; unloads the LLM when done so the GPU is free for images (Phase 2)."
+    }
+  ],
+  "connections": {
+    "Every day at 03:00": { "main": [[{ "node": "Text pipeline (Gemma, 6 seeds)", "type": "main", "index": 0 }]] },
+    "Run now (manual)": { "main": [[{ "node": "Text pipeline (Gemma, 6 seeds)", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "active": false
+}

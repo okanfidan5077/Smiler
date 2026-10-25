@@ -1,0 +1,16 @@
+{
+  "name": "smiler-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Phase 1 pipeline service: runs the meme-lab text pipeline and writes drafts to Supabase",
+  "scripts": {
+    "start": "node src/index.js",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "postgres": "^3.4.9"
+  }
+}
