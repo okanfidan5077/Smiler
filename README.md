@@ -24,6 +24,10 @@ AI-written cartoon memes about workplace absurdities in any profession. Project 
 5. **Admin page:** `cd admin && npm install && npm run dev`, then open http://localhost:5173.
 6. **n8n:** import `n8n/text-pipeline.json` (or ask Claude to import it). It runs daily at 03:00 once activated, and has a manual trigger for testing.
 
+## Review session (daily use)
+
+Double-click **`start-review.cmd`** in the repo root. It starts Ollama, the service and the admin page if they aren't already running, then opens http://localhost:5173. Sign in, press **Generate 12 drafts now** under Stats if the queue is empty (about 5 minutes), and review. Close the minimized "Smiler service" and "Smiler admin" windows when done. n8n and Docker are not needed for this.
+
 ## Admin keys
 
 → / A approve · ← / X reject, then 1–7 reason chips and Enter · E edit lines · R three new punchline options · N note · T Turkish · D details · S skip · U undo last.
