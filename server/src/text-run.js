@@ -67,7 +67,8 @@ export async function runText({ seeds = 6, n = 10, keep = 2, rng = Date.now() % 
         layout: c.layout ?? "",
         layout_description: c.layout_description ?? "",
         template: c.template ?? "",
-        sector: c.sector ?? c.seed.sector,
+        // The seed's sector is the canonical name (sectors table); the writer sometimes respells it.
+        sector: c.seed.sector,
         problem: c.problem ?? "",
         mechanic: c.mechanic ?? c.seed.mechanic,
         mode: c.seed.mechanic === "free" ? "free" : "seeded",

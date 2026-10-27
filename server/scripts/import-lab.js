@@ -63,7 +63,7 @@ for (const file of files) {
       layout: c.layout ?? (c.template || c.format),
       layout_description: c.layout_description ?? "",
       template: c.template ?? "",
-      sector: c.sector ?? c.seed?.sector ?? "",
+      sector: c.seed?.sector ?? c.sector ?? "",
       problem: c.problem ?? "",
       mechanic: c.mechanic ?? c.seed?.mechanic ?? "",
       explore: !!c.explore,
