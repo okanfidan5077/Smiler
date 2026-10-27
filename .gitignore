@@ -4,3 +4,5 @@ meme-lab/results/
 .env.*
 !.env.example
 dist/
+server/bakeoff/
+backups/

@@ -44,5 +44,7 @@ exit /b 1
 
 :ready
 echo All up: admin http://localhost:5173 - service http://localhost:8787 - Ollama :11434
+rem Daily snapshot of approved memes and decisions to OneDrive\SmilerBackups (runs in its own window).
+start "Smiler backup" /min "%NODE%" "%ROOT%server\scripts\backup.js"
 if /i not "%~1"=="--no-open" start "" http://localhost:5173
 endlocal
