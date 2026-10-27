@@ -10,6 +10,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { db, must } from "../src/db.js";
 import { repoRoot } from "../src/env.js";
 import { loadConfig } from "../src/text-run.js";
@@ -97,11 +98,28 @@ if (candidates.includes("flux")) {
 }
 
 // ---------- 3. blind comparison page ----------
-fs.writeFileSync(path.join(outDir, "report.html"), renderReport(plan, candidates));
-log(`report: ${path.join(outDir, "report.html")}`);
+// Images are embedded as JPEG data URIs so the page works as a single file (sent to the user,
+// opened from OneDrive, ...). ComfyUI's Python has Pillow for the PNG -> JPEG conversion.
+const python = process.env.COMFY_PYTHON ?? "C:/AI_TOOLS/ComfyUI/ComfyUI/venv/Scripts/python.exe";
+const convert = spawnSync(python, ["-c", `
+import sys, glob, os
+from PIL import Image
+for p in glob.glob(os.path.join(sys.argv[1], "*.png")):
+    j = p[:-4] + ".jpg"
+    if not os.path.exists(j):
+        Image.open(p).convert("RGB").save(j, "JPEG", quality=88, optimize=True)
+`, outDir], { encoding: "utf8" });
+if (convert.status !== 0) throw new Error(`JPEG conversion failed: ${convert.stderr || convert.error}`);
+const embed = (name) => `data:image/jpeg;base64,${fs.readFileSync(path.join(outDir, name.replace(/\.png$/, ".jpg"))).toString("base64")}`;
+fs.writeFileSync(path.join(outDir, "report.html"), renderReport(plan, candidates, embed));
+log(`report: ${path.join(outDir, "report.html")} (${(fs.statSync(path.join(outDir, "report.html")).size / 1e6).toFixed(1)} MB, images embedded)`);
 
-function renderReport(plan, cands) {
-  const data = JSON.stringify({ started: plan.started, candidates: cands, memes: plan.memes.map(({ id, format, layout, sector, premise, panels, art, renders }) => ({ id, format, layout, sector, premise, panels, art, renders })) }).replace(/</g, "\\u003c");
+function renderReport(plan, cands, embed) {
+  const memes = plan.memes.map(({ id, format, layout, sector, premise, panels, art, renders }) => ({
+    id, format, layout, sector, premise, panels, art,
+    renders: Object.fromEntries(Object.entries(renders).map(([c, r]) => [c, { ...r, files: r.files.map(embed) }])),
+  }));
+  const data = JSON.stringify({ started: plan.started, candidates: cands, memes }).replace(/</g, "\\u003c");
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Image Bake-off</title>
 <style>
