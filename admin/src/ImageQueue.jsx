@@ -4,14 +4,15 @@ import { supabase } from "./supabase.js";
 // Image-stage approval: drawn memes (status images_ready), shown as the app will show them.
 //   → / A approve (ready to publish)
 //   ← / X problems: 1-6 chips, Enter = redraw (back to the drawing queue), Shift+Enter = drop meme
-//   N note   T Turkish   D prompts   S skip   U undo   click an image to enlarge
+//   E edit lines (saved on approve)   N note   T Turkish   D prompts   S skip   U undo   click an image to enlarge
 export const IMAGE_CHIPS = ["bad faces/hands", "doesn't match joke", "style off", "cluttered", "characters change", "text in image"];
 const byPos = (a, b) => a.position - b.position;
 
 export default function ImageQueue() {
   const [items, setItems] = useState(null);
   const [error, setError] = useState("");
-  const [mode, setMode] = useState("view"); // view | reject
+  const [mode, setMode] = useState("view"); // view | reject | edit
+  const [edits, setEdits] = useState({}); // panel position -> line
   const [chips, setChips] = useState([]);
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState("");
@@ -33,7 +34,7 @@ export default function ImageQueue() {
   useEffect(() => { load(); }, [load]);
 
   const meme = items?.[0];
-  const reset = () => { setMode("view"); setChips([]); setNote(""); };
+  const reset = () => { setMode("view"); setChips([]); setNote(""); setEdits({}); };
 
   // decision: approve | redraw | drop
   const decide = useCallback(async (decision) => {
@@ -41,6 +42,13 @@ export default function ImageQueue() {
     setBusy(decision);
     try {
       const status = { approve: "approved", redraw: "text_approved", drop: "rejected" }[decision];
+      // Line edits (E) are saved with an approval, like in the text queue.
+      const changed = decision === "approve" ? meme.panels.filter((p) => edits[p.position] !== undefined && edits[p.position].trim() !== p.line) : [];
+      for (const p of changed) {
+        const { error } = await supabase.from("panels").update({ line: edits[p.position].trim(), line_tr: null }).eq("id", p.id);
+        if (error) throw error;
+      }
+      const panelsOut = (useEdits) => meme.panels.map(({ speaker, line, scene, position }) => ({ speaker, line: useEdits ? (edits[position]?.trim() || line) : line, scene }));
       const { data: fb, error: fbErr } = await supabase
         .from("feedback")
         .insert({
@@ -49,14 +57,15 @@ export default function ImageQueue() {
           decision: decision === "approve" ? "approve" : "reject",
           reasons: decision === "approve" ? [] : chips,
           note: decision === "drop" ? `[dropped] ${note}`.trim() : note,
-          original: { images: meme.meme_images.map(({ url, prompt, seed }) => ({ url, prompt, seed })) },
+          original: { images: meme.meme_images.map(({ url, prompt, seed }) => ({ url, prompt, seed })), panels: panelsOut(false) },
+          edited: changed.length ? { panels: panelsOut(true) } : null,
         })
         .select("id")
         .single();
       if (fbErr) throw fbErr;
       const { error: mErr } = await supabase.from("memes").update({ status }).eq("id", meme.id);
       if (mErr) throw mErr;
-      setLast({ meme, feedbackId: fb.id });
+      setLast({ meme, feedbackId: fb.id, changed });
       setItems((d) => d.slice(1));
       reset();
     } catch (err) {
@@ -64,13 +73,14 @@ export default function ImageQueue() {
     } finally {
       setBusy("");
     }
-  }, [meme, busy, chips, note]);
+  }, [meme, busy, chips, note, edits]);
 
   const undo = useCallback(async () => {
     if (!last || busy) return;
     setBusy("undo");
     try {
       await supabase.from("feedback").delete().eq("id", last.feedbackId);
+      for (const p of last.changed ?? []) await supabase.from("panels").update({ line: p.line, line_tr: p.line_tr }).eq("id", p.id);
       await supabase.from("memes").update({ status: "images_ready" }).eq("id", last.meme.id);
       setItems((d) => [last.meme, ...d]);
       setLast(null);
@@ -86,7 +96,7 @@ export default function ImageQueue() {
     const onKey = (e) => {
       if (zoom) { if (e.key === "Escape" || e.key === " ") setZoom(null); return; }
       const typing = ["TEXTAREA", "INPUT"].includes(e.target.tagName);
-      if (e.key === "Escape") { e.target.blur?.(); reset(); return; }
+      if (e.key === "Escape") { e.target.blur?.(); if (mode === "edit") setMode("view"); else reset(); return; }
       if (typing) {
         if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); e.target.blur(); decide(mode === "reject" ? "redraw" : "approve"); }
         return;
@@ -102,6 +112,7 @@ export default function ImageQueue() {
       }
       if (e.key === "ArrowRight" || k === "a") decide("approve");
       else if (e.key === "ArrowLeft" || k === "x") setMode("reject");
+      else if (k === "e") { e.preventDefault(); setMode((m) => (m === "edit" ? "view" : "edit")); }
       else if (k === "n") { e.preventDefault(); document.querySelector(".note")?.focus(); }
       else if (k === "t") setTr((v) => { localStorage.setItem("smiler.tr", v ? "0" : "1"); return !v; });
       else if (k === "d") setDetails((v) => !v);
@@ -127,8 +138,13 @@ export default function ImageQueue() {
 
   const line = (p) => (
     <div className="line small-line">
-      <span className="speaker">{p.speaker}:</span> {p.line}
-      {tr && p.line_tr && <div className="tr">{p.line_tr}</div>}
+      <span className="speaker">{p.speaker}:</span>{" "}
+      {mode === "edit" ? (
+        <textarea value={edits[p.position] ?? p.line} onChange={(e) => setEdits((x) => ({ ...x, [p.position]: e.target.value }))} rows={2} />
+      ) : (
+        <span className={edits[p.position] !== undefined && edits[p.position] !== p.line ? "edited" : ""}>{edits[p.position] ?? p.line}</span>
+      )}
+      {tr && p.line_tr && mode !== "edit" && edits[p.position] === undefined && <div className="tr">{p.line_tr}</div>}
     </div>
   );
   const imgs = meme.meme_images;
@@ -164,6 +180,7 @@ export default function ImageQueue() {
         <textarea className="note" placeholder="Note (N): what to change in the picture. Ctrl+Enter approves (or redraws while rejecting)." value={note} onChange={(e) => setNote(e.target.value)} rows={2} />
         <div className="actions">
           <button className="danger" disabled={!!busy} onClick={() => setMode("reject")}><kbd>←</kbd> Problems</button>
+          <button disabled={!!busy} onClick={() => setMode((m) => (m === "edit" ? "view" : "edit"))}><kbd>E</kbd> Edit lines</button>
           <button className="primary" disabled={!!busy} onClick={() => decide("approve")}>Approve <kbd>→</kbd></button>
         </div>
         <div className="hints muted"><kbd>T</kbd> Turkish {tr ? "on" : "off"} · <kbd>D</kbd> prompts · <kbd>S</kbd> skip · <kbd>U</kbd> undo · click an image to enlarge</div>
