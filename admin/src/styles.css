@@ -61,6 +61,11 @@ code { font: 13px ui-monospace, monospace; }
 .frames figure { margin: 0; }
 .frames img { width: 100%; border-radius: 10px; border: 1px solid var(--line); cursor: zoom-in; display: block; }
 .small-line { font-size: 15px; margin-top: 6px; }
+.frame { position: relative; }
+/* Label tags on recast templates: the same look the app will use (real text over the picture). */
+.label-tag { position: absolute; transform: translateX(-50%); max-width: 42%; padding: 3px 8px; border-radius: 6px;
+  background: rgba(255, 255, 255, .92); color: #111; font: 700 14px/1.25 system-ui, sans-serif; text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .35); pointer-events: none; }
 .caption-block { margin-top: 10px; display: grid; gap: 2px; }
 .zoom { position: fixed; inset: 0; z-index: 9; background: rgba(0, 0, 0, .85); display: flex; align-items: center; justify-content: center; cursor: zoom-out; }
 .zoom img { max-width: 95vw; max-height: 95vh; border-radius: 8px; }

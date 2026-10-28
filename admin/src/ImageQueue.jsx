@@ -148,9 +148,16 @@ export default function ImageQueue() {
     </div>
   );
   const imgs = meme.meme_images;
-  // Multi-panel memes, and recasts whose labels match their images, pair image N with line N;
-  // otherwise the image(s) come first and all lines (caption or labels) below, as the app shows them.
-  const paired = meme.format === "multi_panel" || (meme.format === "recast_template" && imgs.length === meme.panels.length && imgs.length > 1);
+  // Recast templates: labels sit on their characters (art.labels), as the app will draw them;
+  // captions stay below. Multi-panel memes pair image N with line N. Otherwise lines go below.
+  const labels = meme.format === "recast_template" ? meme.art?.labels ?? [] : [];
+  const placed = new Set(labels.map((l) => l.position));
+  const paired = meme.format === "multi_panel";
+  const below = meme.panels.filter((p) => !placed.has(p.position));
+  const labelText = (pos) => {
+    const p = meme.panels.find((x) => x.position === pos);
+    return p ? (edits[pos] ?? p.line) : "";
+  };
 
   return (
     <main className="queue wide">
@@ -160,12 +167,20 @@ export default function ImageQueue() {
         <div className="frames">
           {imgs.map((im, i) => (
             <figure key={im.id}>
-              <img src={im.url} alt={`panel ${i + 1}`} onClick={() => setZoom(im.url)} />
+              <div className="frame">
+                <img src={im.url} alt={`panel ${i + 1}`} onClick={() => setZoom(im.url)} />
+                {labels.filter((l) => l.image === i + 1).map((l) => (
+                  <span key={l.position} className="label-tag" style={{ left: `${l.x}%`, top: `${l.y}%` }}>{labelText(l.position)}</span>
+                ))}
+              </div>
               {paired && meme.panels[i] && line(meme.panels[i])}
             </figure>
           ))}
         </div>
-        {!paired && <div className="caption-block">{meme.panels.map((p) => <div key={p.id}>{line(p)}</div>)}</div>}
+        {!paired && below.length > 0 && <div className="caption-block">{below.map((p) => <div key={p.id}>{line(p)}</div>)}</div>}
+        {labels.length > 0 && mode === "edit" && (
+          <div className="caption-block muted">Labels on the image: {meme.panels.filter((p) => placed.has(p.position)).map((p) => <div key={p.id}>{line(p)}</div>)}</div>
+        )}
 
         {mode === "reject" && (
           <div className="chips">

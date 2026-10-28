@@ -9,6 +9,7 @@ import { loadConfig } from "../text-run.js";
 import { artDirect, imageCount } from "./art-director.js";
 import { comfyUp, freeMemory } from "./comfy.js";
 import { drawJobs } from "./draw.js";
+import { placeLabels } from "./labels.js";
 import { MODELS } from "./workflows.js";
 import { STYLE } from "./style.js";
 import { toJpeg } from "./jpeg.js";
@@ -45,7 +46,9 @@ export async function runImages({ limit = 6, ids = [], log = () => {} } = {}) {
     "approved memes",
   );
   if (!memes.length) return { drawn: 0, images: 0, errors: [] };
-  const blueprints = new Map(must(await db.from("layouts").select("name, composition").not("composition", "is", null), "blueprints").map((l) => [l.name, l.composition]));
+  const templates = must(await db.from("layouts").select("name, composition, anchors").not("composition", "is", null), "blueprints");
+  const blueprints = new Map(templates.map((l) => [l.name, l.composition]));
+  const anchorsOf = new Map(templates.map((l) => [l.name, l.anchors]));
   const imageNotes = await loadImageNotes();
 
   const [run] = must(await db.from("generation_runs").insert({ kind: "image", config: { model: MODELS, style: STYLE }, params: { limit, ids } }).select("id"), "create run");
@@ -59,6 +62,8 @@ export async function runImages({ limit = 6, ids = [], log = () => {} } = {}) {
       try {
         const comp = blueprints.get(m.layout) ?? null;
         const art = await artDirect(writer, m, comp, imageNotes.forMeme(m.id));
+        // Recast templates: where each label sits on the picture (drawn by the app, not the model).
+        if (m.format === "recast_template") art.labels = await placeLabels(writer, m, anchorsOf.get(m.layout));
         jobs.push({ meme: m, art, seed: Math.floor(Math.random() * 2 ** 31) });
         log(`art ${m.layout} (${imageCount(m, comp)} image${imageCount(m, comp) > 1 ? "s" : ""})\n`);
       } catch (err) {
