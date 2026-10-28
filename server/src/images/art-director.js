@@ -18,6 +18,16 @@ const system = `You are the art director of a cartoon meme series about workplac
 1. cast: every character who appears, by role, with a fixed look: age, build, hair, skin tone, clothing with colors, one distinctive trait. Be specific so the same person can be redrawn identically. Vary genders, ages and skin tones naturally across the cast.
 2. setting: the one place where everything happens, with the few props the joke needs.
 3. images: one prompt per image, in order. Each prompt is self-contained: name each character with their full look from the cast sheet, what they are doing, their facial expression (exaggerated, cartoon-readable), where they stand, camera framing (wide, medium or close-up), and the key props. The image that carries the punchline must make the payoff obvious at a glance: push the key reaction to the extreme, like a totally blank stare, a jaw on the floor, a deeply bored eye-roll, or a smug grin, so the face alone tells the joke.
+4. Framing: when the joke's payoff is a place, object or result (a missing building, a tiny cupcake, a collapsing shelf), frame the shot medium or wide so that payoff is large and clearly recognizable; never crop it to a sliver behind a big face. Keep every mood from the writer's scene notes and exaggerate it, never swap it for cheerfulness. When the payoff is something missing or removed, draw what remains so the absence reads instantly: the bare steel skeleton or concrete foundation of a removed building with one lonely doorframe still standing, an empty shelf with dust outlines of what was there, a wheel-less car on blocks. An empty lot or a plain wall reads as nothing. Every image is one continuous scene: place things with depth words ("behind him to the right", "in the background"), never with "left half / right half of the frame" or "split", which the illustrator draws as two separate panels.
+
+Show emotions with concrete, drawable cues, never with abstract words:
+- tired / exhausted: heavy-lidded half-closed eyes with dark circles, slumped shoulders, messy hair, yawning, propped up on elbows
+- bored: chin resting on hand, eyes rolled up, flat mouth, slouching
+- smug: one raised eyebrow, half-closed eyes, sly closed-mouth grin
+- shocked: eyes wide with tiny pupils, jaw dropped, hands on cheeks
+- panicked: sweat drops, wide eyes, gritted teeth, hands gripping hair
+- confused: one eyebrow up, head tilted, finger scratching head
+Never write "hollow eyes", "blank eyes", "empty eyes" or "dead eyes": the illustrator draws them as white eyes without pupils.
 
 Rules: never ask for any written text, letters, numbers, signs, labels, screens with words, speech or thought bubbles; show meaning with objects, colors, icons and expressions instead (a red error icon, a towering stack of forms). Paper, sheets, screens and signs are always blank or show only simple shapes and colors; never describe what is printed or written on them, even if the joke mentions it (the caption under the picture carries the words). No real brands, logos, companies or real people. 40 to 90 words per prompt.
 
@@ -25,6 +35,8 @@ Recast meme templates come with a blueprint: one description per image. Follow t
 
 // Prompts that describe readable writing (quoted words, "printed instructions", "font", ...).
 const WRITING = /["“][^"”]{3,}["”]|\b(printed|written|handwritten|lettering|font|reads|says|saying|titled|labeled|labelled|caption|headline)\b/i; // not "text": prompts often say "no text"
+
+const EERIE_EYES = /\b(hollow|blank|empty|dead|vacant|lifeless|glazed[- ]over)\s+(eyes|stares?|gazes?|eyed)\b/gi;
 
 // How many images a meme needs: recast templates follow their blueprint (one image per entry,
 // usually one composition; the app lists the labels); singles one image; multi-panel memes one
@@ -63,5 +75,8 @@ export async function artDirect(role, meme, composition = null) {
     ({ data } = await generateJSON({ ...role, temperature: 0.4 }, { system, user: retry, schema, kind: "art-director" }));
   }
   if (data.images.length < brief.images_needed) throw new Error(`art director returned ${data.images.length} of ${brief.images_needed} images`);
+  // Safety net for the eye wording Qwen renders as pupil-less white eyes (user review: tired nurses
+  // came out eerie).
+  for (const im of data.images) im.prompt = im.prompt.replace(EERIE_EYES, "heavy-lidded, half-closed tired eyes with dark circles");
   return { ...data, blueprint: brief.blueprint ?? null, images: data.images.slice(0, brief.images_needed) };
 }

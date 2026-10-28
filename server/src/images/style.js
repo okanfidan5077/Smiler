@@ -10,7 +10,8 @@ export const STYLE =
 // Qwen-Image honors negative prompts (cfg 4). Text is shown by the app below the image, never in it.
 export const NEGATIVE =
   "text, letters, words, numbers, captions, speech bubbles, thought bubbles, signs with writing, labels, logos, watermark, signature, " +
-  "photograph, photorealistic, 3d render, realistic skin, blurry, deformed hands, extra fingers, extra limbs, distorted face, multiple panels, comic grid, border";
+  "photograph, photorealistic, 3d render, realistic skin, blurry, deformed hands, extra fingers, extra limbs, distorted face, " +
+  "white eyes without pupils, empty eye sockets, glowing eyes, multiple panels, comic grid, split screen, dividing line, diptych, border";
 
 // Qwen-Image-Edit instruction for panels 2-4: same people and look, new moment.
 export const EDIT_PREFIX =
