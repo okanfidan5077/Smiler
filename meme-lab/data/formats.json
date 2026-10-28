@@ -95,5 +95,6 @@
   { "name": "Shocked Face", "format": "recast_template", "layout": "Template: someone does the obvious bad thing, then makes a shocked face at the obvious result." },
   { "name": "Domino Effect", "format": "recast_template", "layout": "Template: a tiny domino (a small decision) about to topple a giant domino (the disaster)." },
   { "name": "Iceberg", "format": "recast_template", "layout": "Template: the small visible tip (what management sees) and the huge underwater part (what the work really is)." },
+  { "name": "Ant Carries the Elephant", "format": "recast_template", "layout": "Composition: a tiny, straining ant carries a huge elephant on its back, and the elephant proudly carries one tiny, weightless thing. Labels: the ant is who does the real work; the elephant is who or what gets the credit while doing something trivial; the tiny thing is that trivial task. (User idea.)" },
   { "name": "Fancy Version", "format": "recast_template", "layout": "Template: a character in plain clothes (the plain name), then in a tuxedo (the fancy corporate name for the same thing)." }
 ]

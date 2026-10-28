@@ -49,21 +49,24 @@ export async function loadPromptFeedback() {
   const rows = must(
     await db
       .from("feedback")
-      .select("meme_id, decision, reasons, note, edited, created_at, memes(format, template, panels(position, speaker, line, scene))")
-      .eq("stage", "text")
+      .select("meme_id, stage, decision, reasons, note, edited, created_at, memes(format, template, panels(position, speaker, line, scene))")
       .order("created_at", { ascending: false })
-      .limit(200),
+      .limit(300),
     "feedback",
   );
+  // Text decisions, plus memes dropped at the image stage: once drawn, the user often sees the joke
+  // doesn't land ("what is the joke here?"), and that note is the most useful rejection signal.
+  // Image redraws are about the picture, not the joke, so they stay out.
+  const jokeSignal = rows.filter((r) => r.stage === "text" || (r.stage === "image" && r.note?.startsWith("[dropped]")));
   const seen = new Set();
-  const latest = rows.filter((r) => !seen.has(r.meme_id) && seen.add(r.meme_id)).reverse();
+  const latest = jokeSignal.filter((r) => !seen.has(r.meme_id) && seen.add(r.meme_id)).reverse();
   const entry = (r) => ({
     id: r.meme_id,
     format: r.memes?.format,
     template: r.memes?.template,
     panels: r.edited?.panels ?? (r.memes?.panels ?? []).sort((a, b) => a.position - b.position),
     reasons: r.reasons ?? [],
-    note: r.note ?? "",
+    note: (r.note ?? "").replace(/^\[dropped\]\s*/, r.stage === "image" ? "Dropped after drawing: " : ""),
   });
   return {
     liked: [...base.liked, ...latest.filter((r) => r.decision === "approve").map(entry)],

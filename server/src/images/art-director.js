@@ -17,11 +17,14 @@ const system = `You are the art director of a cartoon meme series about workplac
 
 1. cast: every character who appears, by role, with a fixed look: age, build, hair, skin tone, clothing with colors, one distinctive trait. Be specific so the same person can be redrawn identically. Vary genders, ages and skin tones naturally across the cast.
 2. setting: the one place where everything happens, with the few props the joke needs.
-3. images: one prompt per image, in order. Each prompt is self-contained: name each character with their full look from the cast sheet, what they are doing, their facial expression (exaggerated, cartoon-readable), where they stand, camera framing (wide, medium or close-up), and the key props. The image that carries the punchline must make the payoff obvious at a glance.
+3. images: one prompt per image, in order. Each prompt is self-contained: name each character with their full look from the cast sheet, what they are doing, their facial expression (exaggerated, cartoon-readable), where they stand, camera framing (wide, medium or close-up), and the key props. The image that carries the punchline must make the payoff obvious at a glance: push the key reaction to the extreme, like a totally blank stare, a jaw on the floor, a deeply bored eye-roll, or a smug grin, so the face alone tells the joke.
 
-Rules: never ask for any written text, letters, numbers, signs, labels, screens with words, speech or thought bubbles; show meaning with objects, colors, icons and expressions instead (a red error icon, a towering stack of forms). No real brands, logos, companies or real people. 40 to 90 words per prompt.
+Rules: never ask for any written text, letters, numbers, signs, labels, screens with words, speech or thought bubbles; show meaning with objects, colors, icons and expressions instead (a red error icon, a towering stack of forms). Paper, sheets, screens and signs are always blank or show only simple shapes and colors; never describe what is printed or written on them, even if the joke mentions it (the caption under the picture carries the words). No real brands, logos, companies or real people. 40 to 90 words per prompt.
 
 Recast meme templates come with a blueprint: one description per image. Follow the blueprint exactly: the same people or animals, positions, poses, gestures, facial expressions and framing. The joke works because readers recognize that composition, and the labels (shown under the image) say who stands for what. So never replace a character with the thing its label names: if a label is "AI software", the person stays a person; adapt only clothing and small props to the workplace. In recast prompts, refer to each character only by their visual role from the blueprint ("the young man", "his girlfriend", "the woman in the red dress"), never by a label or job title, and never add props that illustrate a label (no stacks of papers for "bugs"). Start every recast prompt with the exact number of people or animals, e.g. "Exactly three people:", and describe each one once. Never name the original meme or its people.`;
+
+// Prompts that describe readable writing (quoted words, "printed instructions", "font", ...).
+const WRITING = /["“][^"”]{3,}["”]|\b(printed|written|handwritten|lettering|font|reads|says|saying|titled|labeled|labelled|caption|headline)\b/i; // not "text": prompts often say "no text"
 
 // How many images a meme needs: recast templates follow their blueprint (one image per entry,
 // usually one composition; the app lists the labels); singles one image; multi-panel memes one
@@ -50,7 +53,15 @@ export async function artDirect(role, meme, composition = null) {
           ? "One image; the line is the caption under it."
           : "One image per panel, same cast and setting throughout.",
   };
-  const { data } = await generateJSON({ ...role, temperature: 0.4 }, { system, user: JSON.stringify(brief, null, 2), schema, kind: "art-director" });
+  const user = JSON.stringify(brief, null, 2);
+  let { data } = await generateJSON({ ...role, temperature: 0.4 }, { system, user, schema, kind: "art-director" });
+  // Text in images came back in a review (a vet's printed instructions). If a prompt still asks for
+  // readable writing, ask once more with the offending prompts quoted.
+  const texty = data.images.filter((im) => WRITING.test(im.prompt));
+  if (texty.length) {
+    const retry = `${user}\n\nYour previous prompts asked for readable writing, which the illustrator cannot draw: ${texty.map((im) => JSON.stringify(im.prompt)).join(" ")}\nRewrite all prompts so every paper, sheet, screen and sign is blank or shows only shapes and colors.`;
+    ({ data } = await generateJSON({ ...role, temperature: 0.4 }, { system, user: retry, schema, kind: "art-director" }));
+  }
   if (data.images.length < brief.images_needed) throw new Error(`art director returned ${data.images.length} of ${brief.images_needed} images`);
   return { ...data, blueprint: brief.blueprint ?? null, images: data.images.slice(0, brief.images_needed) };
 }
