@@ -35,22 +35,31 @@ if (fs.existsSync(planFile)) {
   plan = JSON.parse(fs.readFileSync(planFile, "utf8"));
   log(`reusing ${planFile}`);
 } else {
+  const fields = "id, format, layout, template, sector, premise, panels(position, speaker, line, line_tr, scene)";
+  const ids = opt("ids", "").split(",").filter(Boolean);
   const approved = must(
-    await db.from("memes").select("id, format, layout, template, sector, premise, panels(position, speaker, line, line_tr, scene)").eq("status", "text_approved").order("created_at", { ascending: false }).limit(200),
+    ids.length
+      ? await db.from("memes").select(fields).in("id", ids)
+      : await db.from("memes").select(fields).eq("status", "text_approved").order("created_at", { ascending: false }).limit(200),
     "approved memes",
   );
   if (!approved.length) throw new Error("no text_approved memes yet; approve some in the admin page first");
   // A mix of formats: multi-panel memes test consistency, singles and recasts test one strong picture.
   const shuffled = approved.sort(() => Math.random() - 0.5);
   const want = { multi_panel: Math.ceil(memeCount / 2), single: Math.max(1, Math.floor(memeCount / 4)), recast_template: Math.max(1, Math.floor(memeCount / 4)) };
-  const picked = [];
-  for (const [format, n] of Object.entries(want)) picked.push(...shuffled.filter((m) => m.format === format).slice(0, n));
-  for (const m of shuffled) if (picked.length < memeCount && !picked.includes(m)) picked.push(m);
+  const picked = ids.length ? shuffled : [];
+  if (!ids.length) {
+    for (const [format, n] of Object.entries(want)) picked.push(...shuffled.filter((m) => m.format === format).slice(0, n));
+    for (const m of shuffled) if (picked.length < memeCount && !picked.includes(m)) picked.push(m);
+  }
+  const compositions = new Map(must(await db.from("layouts").select("name, composition").not("composition", "is", null), "layout blueprints").map((l) => [l.name, l.composition]));
   const writer = loadConfig().writer;
   plan = { started: new Date().toISOString(), style: STYLE, negative: NEGATIVE, memes: [] };
-  for (const [i, m] of picked.slice(0, memeCount).entries()) {
-    log(`art direction ${i + 1}/${memeCount}: ${m.layout} (${m.format}, ${imageCount(m)} image${imageCount(m) > 1 ? "s" : ""})`);
-    const art = await artDirect(writer, m);
+  const chosen = picked.slice(0, ids.length || memeCount);
+  for (const [i, m] of chosen.entries()) {
+    const comp = compositions.get(m.layout) ?? null;
+    log(`art direction ${i + 1}/${chosen.length}: ${m.layout} (${m.format}, ${imageCount(m, comp)} image${imageCount(m, comp) > 1 ? "s" : ""}${comp ? ", blueprint" : ""})`);
+    const art = await artDirect(writer, m, comp);
     plan.memes.push({ ...m, panels: [...m.panels].sort((a, b) => a.position - b.position), art, seed: Math.floor(Math.random() * 2 ** 32), renders: {} });
   }
   fs.writeFileSync(planFile, JSON.stringify(plan, null, 2));

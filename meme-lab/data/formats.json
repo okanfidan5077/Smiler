@@ -21,6 +21,7 @@
   { "name": "Clock Time-Lapse", "format": "multi_panel", "layout": "3-4 panels labeled by time (9:00, 9:05, 9:06): a calm start that collapses fast." },
   { "name": "Ticket Status", "format": "single", "layout": "Caption is an official status update (\"Resolved\", \"On schedule\"); the picture shows the reality." },
   { "name": "Customer Review", "format": "single", "layout": "Caption is a cheerful 5-star review; the picture reveals what the customer did not notice." },
+  { "name": "What People Think vs Reality", "format": "multi_panel", "layout": "2-4 panels: how outsiders (friends, family, the public) imagine this job, line by line, then the reality that wrecks each part. (User idea: a teacher is imagined with quiet, clever students, easy lessons and short hours; the reality is 30 wild kids every hour.)" },
   { "name": "Outsmarted", "format": "multi_panel", "layout": "2 panels: a worker's confident plan to beat an animal, customer or machine; the other side wins effortlessly. (Invented by the writer in round 5, rated 5.)" },
   { "name": "Specialist Vision", "format": "multi_panel", "layout": "2 panels: what a normal person sees in a place; what someone from this profession sees in the same place." },
   { "name": "Distracted Boyfriend", "format": "recast_template", "layout": "Template: a man turns from his partner (the old duty) toward a passer-by (the shiny new thing)." },
