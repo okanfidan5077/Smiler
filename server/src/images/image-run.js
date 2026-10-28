@@ -1,16 +1,16 @@
-// One image run: approved jokes (status text_approved) -> Gemma art direction -> unload Gemma ->
-// Qwen-Image draws each meme's first image -> Qwen-Image-Edit draws the rest from it -> JPEG ->
-// Supabase Storage -> meme_images, status images_ready (the admin page's image queue).
-// Work is grouped by model (all first images, then all edits) so each model loads once, and
-// ComfyUI's memory is freed at the end so the next text run has the GPU.
+// One image run: approved jokes (status text_approved) -> Gemma art direction (with blueprints and
+// the editor's image notes) -> unload Gemma -> Qwen draws (draw.js: cast sheet + panels for
+// multi-image memes) -> JPEG -> Supabase Storage -> meme_images, status images_ready (the admin
+// page's image queue). ComfyUI's memory is freed at the end so the next text run has the GPU.
 
 import crypto from "node:crypto";
-import { db, must } from "../db.js";
+import { db, must, loadImageNotes } from "../db.js";
 import { loadConfig } from "../text-run.js";
 import { artDirect, imageCount } from "./art-director.js";
-import { comfyUp, render, uploadImage, freeMemory } from "./comfy.js";
-import { qwenText2Image, qwenEdit, MODELS } from "./workflows.js";
-import { STYLE, NEGATIVE, EDIT_PREFIX } from "./style.js";
+import { comfyUp, freeMemory } from "./comfy.js";
+import { drawJobs } from "./draw.js";
+import { MODELS } from "./workflows.js";
+import { STYLE } from "./style.js";
 import { toJpeg } from "./jpeg.js";
 
 async function unloadLlm() {
@@ -26,13 +26,12 @@ async function clearImages(memeId) {
   must(await db.from("meme_images").delete().eq("meme_id", memeId), "delete old images");
 }
 
-async function store(memeId, position, png, prompt, seed, model) {
+async function upload(memeId, png, name) {
   const { jpeg, width, height } = toJpeg(png);
-  const path = `${memeId}/${crypto.randomUUID()}.jpg`;
+  const path = `${memeId}/${name}-${crypto.randomUUID()}.jpg`;
   const up = await db.storage.from("memes").upload(path, jpeg, { contentType: "image/jpeg", upsert: false });
   if (up.error) throw new Error(`storage upload: ${up.error.message}`);
-  const url = db.storage.from("memes").getPublicUrl(path).data.publicUrl;
-  must(await db.from("meme_images").insert({ meme_id: memeId, position, url, path, prompt, seed, model, width, height }), "store image");
+  return { path, url: db.storage.from("memes").getPublicUrl(path).data.publicUrl, width, height };
 }
 
 // ids: specific memes (redraws from the admin page); otherwise the oldest `limit` approved jokes.
@@ -47,6 +46,7 @@ export async function runImages({ limit = 6, ids = [], log = () => {} } = {}) {
   );
   if (!memes.length) return { drawn: 0, images: 0, errors: [] };
   const blueprints = new Map(must(await db.from("layouts").select("name, composition").not("composition", "is", null), "blueprints").map((l) => [l.name, l.composition]));
+  const imageNotes = await loadImageNotes();
 
   const [run] = must(await db.from("generation_runs").insert({ kind: "image", config: { model: MODELS, style: STYLE }, params: { limit, ids } }).select("id"), "create run");
   const t0 = Date.now();
@@ -58,9 +58,8 @@ export async function runImages({ limit = 6, ids = [], log = () => {} } = {}) {
     for (const m of memes) {
       try {
         const comp = blueprints.get(m.layout) ?? null;
-        const art = await artDirect(writer, m, comp);
-        must(await db.from("memes").update({ art }).eq("id", m.id), "store art");
-        jobs.push({ meme: m, art, seed: Math.floor(Math.random() * 2 ** 31), pngs: [] });
+        const art = await artDirect(writer, m, comp, imageNotes.forMeme(m.id));
+        jobs.push({ meme: m, art, seed: Math.floor(Math.random() * 2 ** 31) });
         log(`art ${m.layout} (${imageCount(m, comp)} image${imageCount(m, comp) > 1 ? "s" : ""})\n`);
       } catch (err) {
         errors.push({ meme: m.id, step: "art", message: err.message });
@@ -68,36 +67,29 @@ export async function runImages({ limit = 6, ids = [], log = () => {} } = {}) {
     }
     await unloadLlm();
 
-    // 2. First images (Qwen-Image), then later panels from them (Qwen-Image-Edit).
-    for (const j of jobs) {
-      try {
-        [j.pngs[0]] = await render(qwenText2Image({ prompt: `${STYLE} ${j.art.images[0].prompt}`, negative: NEGATIVE, seed: j.seed }));
-        log(`drew ${j.meme.layout} 1/${j.art.images.length}\n`);
-      } catch (err) {
-        j.failed = true;
-        errors.push({ meme: j.meme.id, step: "image 1", message: err.message });
-      }
-    }
-    for (const j of jobs.filter((j) => !j.failed && j.art.images.length > 1)) {
-      try {
-        const ref = await uploadImage(j.pngs[0], `smiler_ref_${j.meme.id}.png`);
-        for (let k = 1; k < j.art.images.length; k++) {
-          [j.pngs[k]] = await render(qwenEdit({ image: ref, prompt: `${EDIT_PREFIX}${j.art.images[k].prompt}`, negative: NEGATIVE, seed: j.seed + k }));
-          log(`drew ${j.meme.layout} ${k + 1}/${j.art.images.length}\n`);
-        }
-      } catch (err) {
-        j.failed = true;
-        errors.push({ meme: j.meme.id, step: "later panels", message: err.message });
-      }
-    }
+    // 2. Draw.
+    await drawJobs(jobs, log);
+    for (const j of jobs.filter((j) => j.failed)) errors.push({ meme: j.meme.id, ...j.error });
 
-    // 3. Upload and hand over to the image queue.
+    // 3. Upload and hand over to the image queue. The cast sheet is kept with the art direction:
+    // it is the start of a character library for reuse.
     let drawn = 0, images = 0;
     for (const j of jobs.filter((j) => !j.failed)) {
       try {
         await clearImages(j.meme.id);
+        const art = { ...j.art };
+        if (j.castPng) art.cast_sheet_url = (await upload(j.meme.id, j.castPng, "cast")).url;
+        must(await db.from("memes").update({ art }).eq("id", j.meme.id), "store art");
+        const multi = j.art.images.length > 1;
         for (const [k, png] of j.pngs.entries()) {
-          await store(j.meme.id, k + 1, png, j.art.images[k].prompt, j.seed + k, k === 0 ? MODELS.qwenT2I : MODELS.qwenEdit);
+          const f = await upload(j.meme.id, png, `panel${k + 1}`);
+          must(
+            await db.from("meme_images").insert({
+              meme_id: j.meme.id, position: k + 1, url: f.url, path: f.path, prompt: j.art.images[k].prompt,
+              seed: j.seed + (multi ? k + 1 : 0), model: multi ? MODELS.qwenEdit : MODELS.qwenT2I, width: f.width, height: f.height,
+            }),
+            "store image",
+          );
           images++;
         }
         must(await db.from("memes").update({ status: "images_ready" }).eq("id", j.meme.id), "status images_ready");

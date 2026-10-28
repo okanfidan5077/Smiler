@@ -11,9 +11,10 @@ export const STYLE =
 export const NEGATIVE =
   "text, letters, words, numbers, captions, speech bubbles, thought bubbles, signs with writing, labels, logos, watermark, signature, " +
   "photograph, photorealistic, 3d render, realistic skin, blurry, deformed hands, extra fingers, extra limbs, distorted face, " +
-  "white eyes without pupils, empty eye sockets, glowing eyes, multiple panels, comic grid, split screen, dividing line, diptych, border";
+  "white eyes without pupils, empty eye sockets, glowing eyes, duplicate person, twins, cloned character, " +
+  "multiple panels, comic grid, split screen, dividing line, diptych, border";
 
-// Qwen-Image-Edit instruction for panels 2-4: same people and look, new moment.
+// Qwen-Image-Edit instruction for each panel of a multi-image meme (after the cast introduction).
 export const EDIT_PREFIX =
-  "Keep exactly the same characters (faces, hair, body shape, clothes and colors), the same art style and the same setting as in the image. " +
-  "Redraw the scene so that it shows: ";
+  "Every character in this panel must look exactly like their figure in the cast lineup (same face, hair, body shape, clothes and colors), " +
+  "drawn in the same cartoon style. Draw one single panel, a full scene with a real background (not a lineup), that shows: ";

@@ -11,12 +11,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { db, must } from "../src/db.js";
+import { db, must, loadImageNotes } from "../src/db.js";
 import { repoRoot } from "../src/env.js";
 import { loadConfig } from "../src/text-run.js";
 import { artDirect, imageCount } from "../src/images/art-director.js";
-import { comfyUp, render, uploadImage } from "../src/images/comfy.js";
-import { qwenText2Image, qwenEdit, fluxText2Image } from "../src/images/workflows.js";
+import { comfyUp, render } from "../src/images/comfy.js";
+import { fluxText2Image } from "../src/images/workflows.js";
+import { drawJobs } from "../src/images/draw.js";
 import { STYLE, NEGATIVE, EDIT_PREFIX } from "../src/images/style.js";
 
 const argv = process.argv.slice(2);
@@ -54,12 +55,13 @@ if (fs.existsSync(planFile)) {
   }
   const compositions = new Map(must(await db.from("layouts").select("name, composition").not("composition", "is", null), "layout blueprints").map((l) => [l.name, l.composition]));
   const writer = loadConfig().writer;
+  const imageNotes = await loadImageNotes();
   plan = { started: new Date().toISOString(), style: STYLE, negative: NEGATIVE, memes: [] };
   const chosen = picked.slice(0, ids.length || memeCount);
   for (const [i, m] of chosen.entries()) {
     const comp = compositions.get(m.layout) ?? null;
     log(`art direction ${i + 1}/${chosen.length}: ${m.layout} (${m.format}, ${imageCount(m, comp)} image${imageCount(m, comp) > 1 ? "s" : ""}${comp ? ", blueprint" : ""})`);
-    const art = await artDirect(writer, m, comp);
+    const art = await artDirect(writer, m, comp, imageNotes.forMeme(m.id));
     plan.memes.push({ ...m, panels: [...m.panels].sort((a, b) => a.position - b.position), art, seed: Math.floor(Math.random() * 2 ** 32), renders: {} });
   }
   fs.writeFileSync(planFile, JSON.stringify(plan, null, 2));
@@ -88,16 +90,21 @@ async function draw(mi, cand, k, graph) {
 const prompt = (m, k) => `${STYLE} ${m.art.images[k].prompt}`;
 
 if (candidates.includes("qwen")) {
-  log("Qwen-Image 2512: first images");
-  for (const [mi, m] of plan.memes.entries()) await draw(mi, "qwen", 0, qwenText2Image({ prompt: prompt(m, 0), negative: NEGATIVE, seed: m.seed }));
-  log("Qwen-Image-Edit 2511: panels 2+ from panel 1");
-  for (const [mi, m] of plan.memes.entries()) {
-    if (m.art.images.length < 2) continue;
-    const ref = await uploadImage(fs.readFileSync(path.join(outDir, file(mi, "qwen", 0))), `smiler_ref_${path.basename(outDir)}_${mi + 1}.png`);
-    for (let k = 1; k < m.art.images.length; k++) {
-      await draw(mi, "qwen", k, qwenEdit({ image: ref, prompt: `${EDIT_PREFIX}${m.art.images[k].prompt}`, negative: NEGATIVE, seed: m.seed + k }));
-    }
+  // Same drawing code as the service (cast sheet + panels for multi-image memes).
+  const todo = plan.memes.map((m, mi) => ({ mi, meme: m, art: m.art, seed: m.seed })).filter((j) => !fs.existsSync(path.join(outDir, file(j.mi, "qwen", 0))));
+  const t0 = Date.now();
+  await drawJobs(todo, (s) => log(`  ${s.trim()}`));
+  for (const j of todo) {
+    if (j.failed) { log(`  FAILED m${j.mi + 1}: ${j.error.step}: ${j.error.message}`); continue; }
+    if (j.castPng) fs.writeFileSync(path.join(outDir, `m${j.mi + 1}_qwen_cast.png`), j.castPng);
+    const r = (plan.memes[j.mi].renders.qwen = { files: [], seconds: [], cast: j.castPng ? `m${j.mi + 1}_qwen_cast.png` : null });
+    j.pngs.forEach((png, k) => {
+      r.files[k] = file(j.mi, "qwen", k);
+      fs.writeFileSync(path.join(outDir, r.files[k]), png);
+    });
+    r.seconds = [Math.round((Date.now() - t0) / 1000 / todo.length)];
   }
+  save();
 }
 if (candidates.includes("flux")) {
   log("FLUX.1 dev (fixed): every image from its prompt");

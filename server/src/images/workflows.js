@@ -31,30 +31,39 @@ export function qwenText2Image({ prompt, negative, seed, width = 1328, height = 
   };
 }
 
-// Qwen-Image-Edit 2511: draws a new panel from a reference image (panel 1), keeping characters,
-// clothes and style. `image` is a name returned by uploadImage().
-export function qwenEdit({ image, prompt, negative = "", seed, steps = 40, cfg = 4 }) {
-  return {
+// Qwen-Image-Edit 2511: draws a new panel from up to 3 reference images (panel 1 plus the panels
+// just before this one), keeping characters, clothes and style. Panel 1 also sets the canvas.
+// `images` are names returned by uploadImage(); the old single `image` is still accepted.
+export function qwenEdit({ image, images = [image], prompt, negative = "", seed, steps = 40, cfg = 4 }) {
+  const refs = images.filter(Boolean).slice(0, 3);
+  const graph = {
     unet: { class_type: "UNETLoader", inputs: { unet_name: MODELS.qwenEdit, weight_dtype: "default" } },
     clip: { class_type: "CLIPLoader", inputs: { clip_name: MODELS.qwenClip, type: "qwen_image", device: "default" } },
     vae: { class_type: "VAELoader", inputs: { vae_name: MODELS.qwenVae } },
     shift: { class_type: "ModelSamplingAuraFlow", inputs: { model: ["unet", 0], shift: 3.1 } },
     norm: { class_type: "CFGNorm", inputs: { model: ["shift", 0], strength: 1 } },
-    load: { class_type: "LoadImage", inputs: { image } },
-    scale: { class_type: "FluxKontextImageScale", inputs: { image: ["load", 0] } },
-    pos: { class_type: "TextEncodeQwenImageEditPlus", inputs: { clip: ["clip", 0], vae: ["vae", 0], image1: ["scale", 0], prompt } },
-    neg: { class_type: "TextEncodeQwenImageEditPlus", inputs: { clip: ["clip", 0], vae: ["vae", 0], image1: ["scale", 0], prompt: negative } },
+  };
+  const refInputs = {};
+  refs.forEach((name, i) => {
+    graph[`load${i + 1}`] = { class_type: "LoadImage", inputs: { image: name } };
+    graph[`scale${i + 1}`] = { class_type: "FluxKontextImageScale", inputs: { image: [`load${i + 1}`, 0] } };
+    refInputs[`image${i + 1}`] = [`scale${i + 1}`, 0];
+  });
+  return Object.assign(graph, {
+    pos: { class_type: "TextEncodeQwenImageEditPlus", inputs: { clip: ["clip", 0], vae: ["vae", 0], ...refInputs, prompt } },
+    neg: { class_type: "TextEncodeQwenImageEditPlus", inputs: { clip: ["clip", 0], vae: ["vae", 0], ...refInputs, prompt: negative } },
     posRef: { class_type: "FluxKontextMultiReferenceLatentMethod", inputs: { conditioning: ["pos", 0], reference_latents_method: "index_timestep_zero" } },
     negRef: { class_type: "FluxKontextMultiReferenceLatentMethod", inputs: { conditioning: ["neg", 0], reference_latents_method: "index_timestep_zero" } },
-    latent: { class_type: "VAEEncode", inputs: { pixels: ["scale", 0], vae: ["vae", 0] } },
+    latent: { class_type: "VAEEncode", inputs: { pixels: ["scale1", 0], vae: ["vae", 0] } },
     sample: {
       class_type: "KSampler",
       inputs: { model: ["norm", 0], positive: ["posRef", 0], negative: ["negRef", 0], latent_image: ["latent", 0], seed: seedOr(seed), steps, cfg, sampler_name: "euler", scheduler: "simple", denoise: 1 },
     },
     decode: { class_type: "VAEDecode", inputs: { samples: ["sample", 0], vae: ["vae", 0] } },
     save: { class_type: "SaveImage", inputs: { images: ["decode", 0], filename_prefix: "smiler/qwen_edit" } },
-  };
+  });
 }
+
 
 // The user's earlier FLUX.1 [dev] setup with its problems fixed: the style goes in the positive
 // prompt (at cfg 1 the negative prompt is ignored), and every panel repeats the cast description

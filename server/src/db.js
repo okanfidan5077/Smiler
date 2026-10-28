@@ -41,6 +41,24 @@ export async function loadCatalog() {
   };
 }
 
+// The editor's notes from image reviews, for the art director: notes on this meme's earlier
+// drawing (a redraw must fix them) plus the latest notes on other memes as general lessons
+// ("more mayhem in the background", "zoom out").
+export async function loadImageNotes() {
+  const rows = must(
+    await db.from("feedback").select("meme_id, note, reasons, created_at").eq("stage", "image").order("created_at", { ascending: false }).limit(200),
+    "image notes",
+  );
+  const clean = (r) => [r.note?.replace(/^\[dropped\]\s*/, "").trim(), r.reasons?.length ? `(${r.reasons.join(", ")})` : ""].filter(Boolean).join(" ");
+  const withText = rows.filter((r) => clean(r));
+  return {
+    forMeme: (memeId) => ({
+      this_meme: withText.filter((r) => r.meme_id === memeId).map(clean),
+      recent: [...new Set(withText.filter((r) => r.meme_id !== memeId).map(clean))].slice(0, 12),
+    }),
+  };
+}
+
 // Prompt memory for writer and critic: meme-lab's rated examples first, then the latest admin
 // decisions (approvals with any edits, rejections with reasons and notes). The prompts read the
 // last 15 of each list, so fresh decisions push out the old lab ratings over time.
