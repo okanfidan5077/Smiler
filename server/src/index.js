@@ -2,6 +2,7 @@
 // and "regenerate punchline". Bound to loopback; Docker Desktop forwards host.docker.internal.
 //
 //   POST /runs/text        { seeds?, n?, keep?, rng?, wait? }  run the text pipeline
+//   POST /runs/images      { limit?, ids?, wait? }              draw approved jokes (ComfyUI)
 //   GET  /runs/current                                          is a run in progress?
 //   POST /memes/:id/punchline                                   3 alternative final lines
 //   GET  /health
@@ -12,9 +13,11 @@
 import http from "node:http";
 import { settings } from "./env.js";
 import { runText } from "./text-run.js";
+import { runImages } from "./images/image-run.js";
 import { punchlineOptions } from "./punchline.js";
 
-let current = null; // { started, params, promise }
+// One run at a time: text (Gemma) and images (Qwen) need the GPU in turn.
+let current = null; // { kind, started, params, promise }
 
 function send(res, status, body) {
   res.writeHead(status, { "content-type": "application/json" });
@@ -40,11 +43,28 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/health") return send(res, 200, { ok: true, running: !!current });
 
     if (req.method === "GET" && url.pathname === "/runs/current") {
-      return send(res, 200, current ? { running: true, started: current.started, params: current.params } : { running: false });
+      return send(res, 200, current ? { running: true, kind: current.kind, started: current.started, params: current.params } : { running: false });
+    }
+
+    if (req.method === "POST" && url.pathname === "/runs/images") {
+      if (current) return send(res, 409, { error: `a ${current.kind} run is already in progress`, started: current.started });
+      const body = await readBody(req);
+      const params = { limit: Math.min(Number(body.limit ?? 6), 30), ids: Array.isArray(body.ids) ? body.ids.slice(0, 30) : [] };
+      const started = new Date().toISOString();
+      console.log(`${started} image run ${JSON.stringify(params)}`);
+      const promise = runImages({ ...params, log: (s) => process.stdout.write(s) }).finally(() => (current = null));
+      current = { kind: "images", started, params, promise };
+      if (body.wait === false) {
+        promise.then((r) => console.log(`image run done: ${JSON.stringify(r)}`), (err) => console.error(`image run failed: ${err.message}`));
+        return send(res, 202, { started, params });
+      }
+      const result = await promise;
+      console.log(`image run done: ${JSON.stringify(result)}`);
+      return send(res, 200, result);
     }
 
     if (req.method === "POST" && url.pathname === "/runs/text") {
-      if (current) return send(res, 409, { error: "a run is already in progress", started: current.started });
+      if (current) return send(res, 409, { error: `a ${current.kind} run is already in progress`, started: current.started });
       const body = await readBody(req);
       const params = {
         seeds: Math.min(Number(body.seeds ?? 6), 20),
@@ -55,7 +75,7 @@ const server = http.createServer(async (req, res) => {
       const started = new Date().toISOString();
       console.log(`${started} text run ${JSON.stringify(params)}`);
       const promise = runText({ ...params, log: (s) => process.stdout.write(s) }).finally(() => (current = null));
-      current = { started, params, promise };
+      current = { kind: "text", started, params, promise };
       // n8n waits for the result (wait: true, the default); the admin page starts it and polls.
       if (body.wait === false) {
         promise.catch((err) => console.error(`run failed: ${err.message}`));

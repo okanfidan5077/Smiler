@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase, configured } from "./supabase.js";
 import Queue from "./Queue.jsx";
+import ImageQueue from "./ImageQueue.jsx";
 import Stats from "./Stats.jsx";
 
 export default function App() {
@@ -40,12 +41,13 @@ export default function App() {
         <strong>Smiler</strong>
         <nav>
           <button className={tab === "queue" ? "on" : ""} onClick={() => setTab("queue")}>Text queue</button>
+          <button className={tab === "images" ? "on" : ""} onClick={() => setTab("images")}>Image queue</button>
           <button className={tab === "stats" ? "on" : ""} onClick={() => setTab("stats")}>Stats</button>
         </nav>
         <span className="muted">{session.user.email}</span>
         <button onClick={() => supabase.auth.signOut()}>Sign out</button>
       </header>
-      {isAdmin === null ? <p className="muted pad">Checking access…</p> : tab === "queue" ? <Queue /> : <Stats />}
+      {isAdmin === null ? <p className="muted pad">Checking access…</p> : tab === "queue" ? <Queue /> : tab === "images" ? <ImageQueue /> : <Stats />}
     </div>
   );
 }

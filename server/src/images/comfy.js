@@ -12,6 +12,15 @@ export async function comfyUp() {
   }
 }
 
+// VRAM sequencing: unload ComfyUI's models so Gemma (Ollama) has the GPU for the next text run.
+export async function freeMemory() {
+  await fetch(`${base()}/free`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ unload_models: true, free_memory: true }),
+  }).catch(() => {});
+}
+
 // Uploads a PNG so LoadImage can use it (reference panel for Qwen-Image-Edit).
 export async function uploadImage(buffer, name) {
   const form = new FormData();

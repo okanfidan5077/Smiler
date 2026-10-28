@@ -35,10 +35,10 @@ export default function Stats() {
     return () => clearInterval(t);
   }, [server, load]);
 
-  const generate = async () => {
+  const start = async (path, body) => {
     setError("");
     try {
-      await callServer("/runs/text", { wait: false });
+      await callServer(path, { ...body, wait: false });
       load();
     } catch (err) {
       setError(err.message);
@@ -51,16 +51,28 @@ export default function Stats() {
     <main className="stats pad">
       <section className="tiles">
         <Tile label="Waiting for text approval" value={counts.draft} />
-        <Tile label="Text approved (backlog for images)" value={counts.text_approved} />
-        <Tile label="Approval rate" value={total ? `${Math.round((100 * decisions.approve) / total)}%` : "–"} sub={`${decisions.approve} of ${total} decisions`} />
+        <Tile label="Text approved, waiting to be drawn" value={counts.text_approved} />
+        <Tile label="Drawn, waiting for image approval" value={counts.images_ready} />
+        <Tile label="Ready to publish" value={counts.approved} />
+        <Tile label="Text approval rate" value={total ? `${Math.round((100 * decisions.approve) / total)}%` : "–"} sub={`${decisions.approve} of ${total} decisions`} />
         <Tile label="Rejected" value={counts.rejected} />
       </section>
 
       <section>
         <h2>Generate</h2>
-        {server === false && <p className="muted">The local server is offline. Start it with <code>npm start</code> in <code>server/</code>.</p>}
-        {server?.running && <p>A run started at {new Date(server.started).toLocaleTimeString()} is in progress (about 5 minutes).</p>}
-        {server && !server.running && <button className="primary" onClick={generate}>Generate 12 drafts now</button>}
+        {server === false && <p className="muted">The local server is offline. Run <code>start-review.cmd</code>.</p>}
+        {server?.running && (
+          <p>
+            {server.kind === "images" ? "Drawing" : "Writing"} since {new Date(server.started).toLocaleTimeString()}
+            {server.kind === "images" ? ` (${server.params?.ids?.length || server.params?.limit} memes, about 1 to 5 minutes each)` : " (about 5 minutes)"}.
+          </p>
+        )}
+        {server && !server.running && (
+          <div className="actions">
+            <button className="primary" onClick={() => start("/runs/text", {})}>Write 12 drafts now</button>
+            <button className="primary" disabled={!counts.text_approved} onClick={() => start("/runs/images", { limit: 6 })}>Draw 6 approved jokes now</button>
+          </div>
+        )}
         {error && <p className="error">{error}</p>}
       </section>
 
